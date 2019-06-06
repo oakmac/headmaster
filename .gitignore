@@ -1,14 +1,14 @@
-*.diff
+## NPM libraries
 node_modules/
-out/
-target/
-.shadow-cljs/
-.nrepl-port
-*.sqlite3
 
+## Shadow CLJS files
+.nrepl-port
+.shadow-cljs/
+public/js/cljs-runtime/
+public/js/main.js
+public/js/manifest.edn
+
+*.sqlite3
 *.db
 config.json
-
-public/js/cljs-runtime/
-public/js/manifest.edn
-public/js/main.js
+*.diff

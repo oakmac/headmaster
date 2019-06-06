@@ -1,0 +1,13 @@
+*.diff
+node_modules/
+out/
+target/
+.shadow-cljs/
+.nrepl-port
+
+*.db
+config.json
+
+public/js/cljs-runtime/
+public/js/manifest.edn
+public/js/main.js

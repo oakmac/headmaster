@@ -1,0 +1,19 @@
+{
+  "name": "headmaster",
+  "description": "Coding Bootcamp Classroom Tracker",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/oakmac/headmaster.git"
+  },
+  "version": "0.0.1",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser-json": "1.9.2",
+    "create-react-class": "15.6.3",
+    "express": "4.16.3",
+    "github-api": "3.0.0",
+    "moment": "^2.24.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  }
+}

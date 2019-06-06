@@ -4,6 +4,7 @@ out/
 target/
 .shadow-cljs/
 .nrepl-port
+*.sqlite3
 
 *.db
 config.json

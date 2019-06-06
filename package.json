@@ -7,13 +7,20 @@
   },
   "version": "0.0.1",
   "license": "ISC",
+  "scripts": {
+    "migrate": "knex migrate:latest"
+  },
   "dependencies": {
-    "body-parser-json": "1.9.2",
     "create-react-class": "15.6.3",
-    "express": "4.16.3",
+    "express": "4.17.1",
     "github-api": "3.0.0",
     "moment": "2.24.0",
+    "pg": "7.11.0",
     "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "react-dom": "16.8.6",
+    "sqlite3": "4.0.8"
+  },
+  "devDependencies": {
+    "knex": "0.17.0"
   }
 }

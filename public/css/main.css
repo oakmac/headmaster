@@ -1,0 +1,55 @@
+.stoplight {
+  background-color: black;
+  border-radius: 100%;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.stoplight.green {
+  background-color: green;
+}
+
+.stoplight.yellow {
+  background-color: yellow;
+  border: 1px solid #ccc;
+}
+
+.stoplight.red {
+  background-color: red;
+}
+
+.feather-icon {
+  fill: none;
+  height: 24px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  stroke: currentColor;
+  width: 24px;
+}
+
+.feather-icon.stoplight-red {
+  fill: red;
+  color: #000;
+}
+
+.stoplight-column {
+  text-align: center !important;
+  width: 100px;
+}
+
+.table .sort-icon {
+  height: 16px;
+  margin-left: 4px;
+  margin-top: 4px;
+  vertical-align: top;
+  width: 16px;
+}
+
+.github-icon {
+  display: inline-block;
+  margin-right: 5px;
+  margin-top: 2px;
+  vertical-align: top;
+}

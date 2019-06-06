@@ -15,7 +15,15 @@ npm install
 
 ### Backend
 
-TODO: write this
+```sh
+# Runs latest migrations and starts up the backend server.
+# Backend server will reload with changes (uses nodemon) underneath.
+npm start
+
+# Run migrations on their own.
+npm run migrate
+```
+
 
 ### UI Development
 

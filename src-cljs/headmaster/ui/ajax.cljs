@@ -6,7 +6,7 @@
 
 (defn- class-url [class-id]
   (if (in-mock-mode?)
-    (str "data/class1.json")
+    (str "data/demo-class1.json")
     "TODO: real URL here")) ; (str "/data/" class-id)))
 
 (defn fetch-class [class-id success-fn error-fn]

@@ -1,0 +1,61 @@
+{
+  "id":"2018-02-houston-flex",
+  "title":"Full Stack Flex",
+  "subtitle":"Feb 2018, Houston",
+  "students":{
+    "student-07be7b0c-80c9-4480-a540-57db661806b8":{
+      "name":"Rich Hickey",
+      "stoplight":"green",
+      "github":"richhickey",
+      "lastGitHubCommit":"2018-05-20T17:29:36Z"
+    },
+    "student-2a3c740e-603e-4d20-9061-c45b26611239":{
+      "name":"Jeremy Ashkenas",
+      "stoplight":"green",
+      "github":"jashkenas",
+      "lastGitHubCommit":"2018-05-19T18:29:34Z"
+    },
+    "student-91d0ba84-a18b-4faa-877f-234673907f24":{
+      "name":"David Nolen",
+      "stoplight":"yellow",
+      "github":"swannodette",
+      "lastGitHubCommit":"2018-05-05T15:59:48Z"
+    },
+    "student-598862e7-6739-47bd-a6aa-dc9a42cd60b0":{
+      "name":"Guido van Rossum",
+      "stoplight":"red",
+      "github":"gvanrossum",
+      "lastGitHubCommit":"2018-05-19T14:20:45Z"
+    },
+    "student-ffa52734-0d5d-4b70-bf4d-fb5e7bd1f232":{
+      "name":"Rebecca Murphey",
+      "stoplight":"green",
+      "github":"rmurphey",
+      "lastGitHubCommit":"2018-05-19T17:17:54Z"
+    },
+    "student-61520e06-581d-4bf7-b748-06b1728a1818":{
+      "name":"Mike Fikes",
+      "stoplight":"yellow",
+      "github":"mfikes",
+      "lastGitHubCommit":"2018-05-18T19:52:03Z"
+    },
+    "student-063f3ed4-808c-4296-b152-602e5b72ae29":{
+      "name":"John Resig",
+      "stoplight":"red",
+      "github":"jeresig",
+      "lastGitHubCommit":"2018-05-20T02:36:54Z"
+    },
+    "student-0dad8e75-7f35-4b10-927f-a3a94f721363":{
+      "name":"Mike Bostock",
+      "stoplight":"yellow",
+      "github":"mbostock",
+      "lastGitHubCommit":"2018-05-19T03:50:57Z"
+    },
+    "student-cbc8a496-3fa9-4ef8-9b0c-262391184c7c":{
+      "name":"Linus Torvalds",
+      "stoplight":"yellow",
+      "github":"torvalds",
+      "lastGitHubCommit":"2018-05-19T14:45:38Z"
+    }
+  }
+}

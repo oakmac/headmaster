@@ -3,6 +3,7 @@
     [cljsjs.moment]
     [goog.functions :as gfunctions]
     [headmaster.ui.ajax :as ajax]
+    [headmaster.ui.components.touchpoint-modal :refer [TouchpointModal]]
     [headmaster.ui.config :refer [config in-mock-mode?]]
     ; [headmaster.ui.html.assignments-page :refer [AssignmentsPage]]
     ; [headmaster.ui.html.attendance-page :refer [AttendancePage]]
@@ -24,16 +25,20 @@
 (defn App
   "The Root component."
   []
-  (let [page-id @(rf/subscribe [:page-id])]
-    (case page-id
-      "DASHBOARD_PAGE" [DashboardPage]
-      "STUDENTS_PAGE" [StudentsPage]
-      ; "STUDENT_PAGE" [StudentPage]
-      ; "ATTENDANCE_PAGE" [AttendancePage]
-      ; "ASSIGNMENTS_PAGE" [AssignmentsPage]
+  (let [page-id @(rf/subscribe [:page-id])
+        touchpoint-modal @(rf/subscribe [:touchpoint-modal])]
+    [:div
+      (case page-id
+        "DASHBOARD_PAGE" [DashboardPage]
+        "STUDENTS_PAGE" [StudentsPage]
+        ; "STUDENT_PAGE" [StudentPage]
+        ; "ATTENDANCE_PAGE" [AttendancePage]
+        ; "ASSIGNMENTS_PAGE" [AssignmentsPage]
 
-      ;; FIXME: better error here
-      [:div "<h1>No Page Found</h1>"])))
+        ;; FIXME: better error here
+        [:div "<h1>No Page Found</h1>"])
+      (when touchpoint-modal
+        [TouchpointModal])]))
 
 ;; -----------------------------------------------------------------------------
 ;; Development Functions

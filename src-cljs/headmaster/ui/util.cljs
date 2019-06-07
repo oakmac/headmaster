@@ -29,3 +29,7 @@
 
 (defn github-url [username]
   (str "https://github.com/" username))
+
+(defn prevent-default [js-evt]
+  (when (fn? (oget js-evt "preventDefault"))
+    (ocall js-evt "preventDefault")))

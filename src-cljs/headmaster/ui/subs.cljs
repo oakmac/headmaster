@@ -25,3 +25,8 @@
   :class
   (fn [db _]
     (:class db)))
+
+(rf/reg-sub
+  :student
+  (fn [db [_ student-id]]
+    (get-in db [:class :students (keyword student-id)])))

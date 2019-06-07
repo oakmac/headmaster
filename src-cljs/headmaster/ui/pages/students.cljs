@@ -3,6 +3,7 @@
   (:require
     [clojure.string :as str]
     [headmaster.ui.html.common :as common]
+    [headmaster.ui.util :as util]
     [oops.core :refer [ocall]]
     [re-frame.core :as rf]
     [taoensso.timbre :as timbre]))
@@ -279,7 +280,11 @@
           timeAgo)
         " by " recordedBy])])
 
-(defn StudentTile [{:keys [avatar name github events stoplight] :as student}]
+(defn- click-add-touchpoint [student-id js-evt]
+  (util/prevent-default js-evt)
+  (rf/dispatch [:touchpoint-modal/open student-id]))
+
+(defn StudentTile [{:keys [avatar id name github events stoplight] :as student}]
   [:div.card.student-card
     [:div.card-content
       [TileTop student]
@@ -287,7 +292,10 @@
         [:div.column [LastTouchpoint (first events)]]
         [:div.column.is-narrow [CommitGraph student]]]]
     [:footer.card-footer
-      [:a.card-footer-item {:href "#" :on-click (fn [js-evt] (ocall js-evt "preventDefault"))} "Add Touchpoint"]]])
+      [:a.card-footer-item
+        {:href "#"
+         :on-click (partial click-add-touchpoint id)}
+        "Add Touchpoint"]]])
 
 (defn TileRow [row-idx students]
   [:div.columns {:key row-idx}
@@ -321,7 +329,7 @@
       [common/ClassHeader]
       [common/PrimaryNav]
       [:div.content
-        ; [ToggleViewButtons]
+        [ToggleViewButtons]
         (case view-type
           "TABLE_VIEW" [StudentsTable]
           "TILES_VIEW" [StudentsTiles]

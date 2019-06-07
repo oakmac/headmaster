@@ -6,12 +6,14 @@ A classroom tracking tool for coding bootcamps.
 
 ### First-time Setup
 
-Install [node.js], then from the command line:
+Install [Node.js], then from the command line:
 
 ```sh
 # installs node_modules/ folder
 npm install
 ```
+
+[Node.js]:https://nodejs.org/
 
 ### Backend
 

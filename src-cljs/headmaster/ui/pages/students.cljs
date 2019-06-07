@@ -267,7 +267,7 @@
   [:div
     [:h5.thin-header "Last Touchpoint"]
     (when stoplight
-      [:p.stoplight-status "Stoplight status: " [:strong (str/capitalize stoplight)]])
+      [:p.stoplight-status "Status: " [:strong (str/capitalize stoplight)]])
     (when (string? comment)
       [:blockquote.comment comment])
     (when-not (empty? tags)
@@ -292,6 +292,10 @@
         [:div.column [LastTouchpoint (first events)]]
         [:div.column.is-narrow [CommitGraph student]]]]
     [:footer.card-footer
+      [:a.card-footer-item
+        {:href "#"
+         :on-click util/prevent-default}
+        "Details"]
       [:a.card-footer-item
         {:href "#"
          :on-click (partial click-add-touchpoint id)}

@@ -64,6 +64,13 @@
         (reverse sorted-students)
         sorted-students))))
 
+(def default-view-type "TILES_VIEW")
+
+(rf/reg-sub
+  :students-page/view-type
+  (fn [db _]
+    (get-in db [:students-page :view-type] default-view-type)))
+
 ;;------------------------------------------------------------------------------
 ;; Events
 
@@ -90,6 +97,11 @@
         (if (= direction :desc)
           :asc
           :desc)))))
+
+(rf/reg-event-db
+  :students-page/set-view-type
+  (fn [db [_ view-type]]
+    (assoc-in db [:students-page :view-type] view-type)))
 
 ;;------------------------------------------------------------------------------
 ;; Views
@@ -148,9 +160,156 @@
       [:tbody
         (map-indexed TableRow sorted-students)]]))
 
+(def zero-commits-color "#ebedf0")
+(def sml-commits-color "#c6e48b")
+(def med-commits-color "#7bc96f")
+(def lrg-commits-color "#239a3b")
+(def xl-commits-color "#196127")
+
+(defn- num-commits-color [num-commits]
+  (cond
+    (zero? num-commits) zero-commits-color
+    (< num-commits 8) sml-commits-color
+    (< num-commits 15) med-commits-color
+    (< num-commits 22) lrg-commits-color
+    :else xl-commits-color))
+
+;; TODO: add hover-over for each cell here
+(defn CommitGraphDay [{:keys [commit-count]}]
+  [:div.cell.day
+    {:style {:background-color (num-commits-color commit-count)}}])
+
+(defn- random-commit-count []
+  (let [x (rand-int 4)]
+    (cond
+      (= x 0) 0
+      (= x 1) (rand-int 5)
+      (= x 2) (rand-int 15)
+      :else (rand-int 25))))
+
+;; TODO: use <svg> instead here?
+(defn CommitGraph []
+  [:div
+    [:h5.thin-header "Latest Commits"]
+    [:div.commit-graph
+      [:div.row.days-row
+        [:div.week-count]
+        [:div.cell]
+        [:div.cell]
+        [:div.cell.day-abbreviation "Tu"]
+        [:div.cell]
+        [:div.cell.day-abbreviation "Th"]
+        [:div.cell]
+        [:div.cell.day-abbreviation "Sa"]]
+      [:div.row.week
+        [:div.week-count "#8"]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]]
+      [:div.row.week
+        [:div.week-count "#9"]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]]
+      [:div.row.week
+        [:div.week-count "#11"]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]]
+      [:div.row.week
+        [:div.week-count "#12"]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [CommitGraphDay {:commit-count (random-commit-count)}]
+        [:div.cell]
+        [:div.cell]]]])
+
+;; touchpoint types
+;; - flag stoplight status
+;; - emotional status
+;; - comment
+
+(def placeholder-96px "https://bulma.io/images/placeholders/96x96.png")
+
+(defn TileTop [{:keys [avatar name github stoplight]}]
+  [:div.media.tile-top
+    [:div.media-left
+      [:figure.image.is-48x48
+        [:img {:src (if (string? avatar) avatar placeholder-96px)
+               :alt (str "Avatar for " name)}]]]
+    [:div.media-content
+      [:p.title.is-4
+        name
+        [:span {:style {:display "inline-block"
+                        :margin-left "6px"}}
+          [common/Stoplight stoplight]]]
+      [:p.subtitle.is-6 [common/GitHubLink github]]]])
+
+(defn LastTouchpoint []
+  [:div
+    [:h5.thin-header "Last Touchpoint"]
+    ; [:p "Last touchpoint " [:strong "3 days ago"]]
+    [:p "Eli the TA marked Green Stoplight"]
+    [:p "Last commit " [:strong "6 hours ago"]]])
+
+(defn StudentTile [{:keys [avatar name github stoplight] :as student}]
+  [:div.card.student-card
+    [:div.card-content
+      [TileTop student]
+      [:div.columns
+        [:div.column [LastTouchpoint student]]
+        [:div.column.is-narrow [CommitGraph student]]]]
+    [:footer.card-footer
+      [:a.card-footer-item {:href "#"} "Add Touchpoint"]]])
+
+(defn TileRow [row-idx students]
+  [:div.columns {:key row-idx}
+    (map-indexed
+      (fn [cell-idx student]
+        [:div.column {:key cell-idx}
+          (when student
+            [StudentTile student])])
+      students)])
+
+(def num-columns 4)
+
+(defn StudentsTiles
+  []
+  (let [sorted-students @(rf/subscribe [:sorted-students])
+        student-chunks (partition num-columns num-columns (repeat false) sorted-students)]
+    [:div
+      (map-indexed TileRow student-chunks)]))
+
+;; TODO: make this a toggle component instead of buttons
+(defn ToggleViewButtons []
+  [:div.field.is-grouped
+    [:p.control
+      [:button.button {:on-click #(rf/dispatch [:students-page/set-view-type "TABLE_VIEW"])} "Table View"]]
+    [:p.control
+      [:button.button {:on-click #(rf/dispatch [:students-page/set-view-type "TILES_VIEW"])} "Tiles View"]]])
+
 (defn StudentsPage []
-  [:section.section
-    [common/ClassHeader]
-    [common/PrimaryNav]
-    [:div.content
-      [StudentsTable]]])
+  (let [view-type @(rf/subscribe [:students-page/view-type])]
+    [:section.section
+      [common/ClassHeader]
+      [common/PrimaryNav]
+      [:div.content
+        [ToggleViewButtons]
+        (case view-type
+          "TABLE_VIEW" [StudentsTable]
+          "TILES_VIEW" [StudentsTiles]
+          (timbre/error "Invalid Students Page view-type"))]]))

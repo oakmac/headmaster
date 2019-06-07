@@ -53,3 +53,61 @@
   margin-top: 2px;
   vertical-align: top;
 }
+
+/* -----------------------------------------------------------------------------
+/* Student Card
+/* ---------------------------------------------------------------------------*/
+
+.student-card figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.student-card .card-content {
+  padding: 1.1rem;
+}
+
+.student-card .tile-top {
+  margin-bottom: 15px !important;
+}
+
+.student-card .thin-header {
+  border-bottom: 1px solid #e4e4e4;
+  color: #666;
+  font-size: 12px;
+  font-weight: 300;
+  margin: 0 0 10px 0;
+  padding: 0 0 5px 0;
+  text-transform: uppercase;
+}
+
+/* -----------------------------------------------------------------------------
+/* Commit Graph
+/* ---------------------------------------------------------------------------*/
+
+.commit-graph .cell {
+  height: 10px;
+  margin-right: 3px;
+  width: 10px;
+}
+
+.commit-graph .row {
+  display: flex;
+  margin-bottom: 3px;
+}
+
+.commit-graph .day {
+  background: green;
+}
+
+.commit-graph .day-abbreviation {
+  font-size: 9px;
+}
+
+.commit-graph .week-count {
+  font-size: 9px;
+  height: 10px;
+  margin-right: 3px;
+  width: 18px;
+  text-align: right;
+}

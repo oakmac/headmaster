@@ -53,8 +53,9 @@
     username])
 
 (defn Stoplight
-  [status]
+  [status {:keys [small?]}]
   [:span.icon
+    {:class (when small? "is-small")}
     (if (= "red" status)
       [SVGIcon "alert-triangle" "stoplight-red"]
       [:span {:class (str "stoplight " (str/lower-case status))}])])

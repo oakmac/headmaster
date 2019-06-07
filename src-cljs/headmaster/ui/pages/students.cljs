@@ -238,11 +238,6 @@
         [:div.cell]
         [:div.cell]]]])
 
-;; touchpoint types
-;; - flag stoplight status
-;; - emotional status
-;; - comment
-
 (def placeholder-96px "https://bulma.io/images/placeholders/96x96.png")
 
 (defn TileTop [{:keys [avatar name github stoplight]}]
@@ -259,22 +254,40 @@
           [common/Stoplight stoplight]]]
       [:p.subtitle.is-6 [common/GitHubLink github]]]])
 
-(defn LastTouchpoint []
+(defn SmallTag [idx {:keys [label status]}]
+  [:span.tag
+    {:class [(when (= status "good") "is-success")
+             (when (= status "bad") "is-warning")
+             (when (= status "really-bad") "is-danger")]
+     :key idx}
+    label])
+
+(defn LastTouchpoint [{:keys [isOldEvent timeAgo recordedBy stoplight comment tags]}]
   [:div
     [:h5.thin-header "Last Touchpoint"]
-    ; [:p "Last touchpoint " [:strong "3 days ago"]]
-    [:p "Eli the TA marked Green Stoplight"]
-    [:p "Last commit " [:strong "6 hours ago"]]])
+    (when stoplight
+      [:p.stoplight-status "Stoplight status: " [:strong (str/capitalize stoplight)]])
+    (when (string? comment)
+      [:blockquote.comment comment])
+    (when-not (empty? tags)
+      [:div.tags (map-indexed SmallTag tags)])
+    ;; NOTE: this conditional will go away when we are not using mock data
+    (when recordedBy
+      [:p.recorded-by
+        (if isOldEvent
+          [:strong timeAgo]
+          timeAgo)
+        " by " recordedBy])])
 
-(defn StudentTile [{:keys [avatar name github stoplight] :as student}]
+(defn StudentTile [{:keys [avatar name github events stoplight] :as student}]
   [:div.card.student-card
     [:div.card-content
       [TileTop student]
       [:div.columns
-        [:div.column [LastTouchpoint student]]
+        [:div.column [LastTouchpoint (first events)]]
         [:div.column.is-narrow [CommitGraph student]]]]
     [:footer.card-footer
-      [:a.card-footer-item {:href "#"} "Add Touchpoint"]]])
+      [:a.card-footer-item {:href "#" :on-click (fn [js-evt] (ocall js-evt "preventDefault"))} "Add Touchpoint"]]])
 
 (defn TileRow [row-idx students]
   [:div.columns {:key row-idx}
@@ -308,7 +321,7 @@
       [common/ClassHeader]
       [common/PrimaryNav]
       [:div.content
-        [ToggleViewButtons]
+        ; [ToggleViewButtons]
         (case view-type
           "TABLE_VIEW" [StudentsTable]
           "TILES_VIEW" [StudentsTiles]

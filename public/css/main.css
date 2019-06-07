@@ -81,6 +81,26 @@
   text-transform: uppercase;
 }
 
+.student-card .recorded-by {
+  color: #777;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.student-card .comment {
+  font-size: 0.75em;
+  padding: 1em 1em;
+}
+
+.student-card .tags {
+  margin-bottom: 0.1em;
+}
+
+.student-card .stoplight-status {
+  margin-bottom: 0.6em !important;
+}
+
 /* -----------------------------------------------------------------------------
 /* Commit Graph
 /* ---------------------------------------------------------------------------*/

@@ -5,73 +5,211 @@
   "students":{
     "student-07be7b0c-80c9-4480-a540-57db661806b8":{
       "name":"Rich Hickey",
-      "avatar": "https://avatars1.githubusercontent.com/u/34045?s=460&v=4",
+      "avatar":"https://avatars1.githubusercontent.com/u/34045?s=460&v=4",
       "stoplight":"green",
       "github":"richhickey",
-      "lastGitHubCommit":"2018-05-20T17:29:36Z"
+      "lastGitHubCommit":"2018-05-20T17:29:36Z",
+      "events":[
+        {
+          "timeAgo":"yesterday",
+          "recordedBy":"Amanda Shih",
+          "stoplight":"green",
+          "comment":"Rich really nailed the DOM exercise. He was very excited about it.",
+          "tags":[
+            {
+              "label":"High Comprehension",
+              "status":"good"
+            },
+            {
+              "label":"High Motivation",
+              "status":"good"
+            }
+          ]
+        }
+      ]
     },
     "student-2a3c740e-603e-4d20-9061-c45b26611239":{
       "name":"Jeremy Ashkenas",
-      "avatar": "https://avatars2.githubusercontent.com/u/4732?s=460&v=4",
+      "avatar":"https://avatars2.githubusercontent.com/u/4732?s=460&v=4",
       "stoplight":"green",
       "github":"jashkenas",
-      "lastGitHubCommit":"2018-05-19T18:29:34Z"
+      "lastGitHubCommit":"2018-05-19T18:29:34Z",
+      "events":[
+        {
+          "isOldEvent":true,
+          "timeAgo":"6 days ago",
+          "stoplight":"green",
+          "recordedBy":"Chris Oakman",
+          "tags":[
+            {
+              "label":"High Work Output",
+              "status":"good"
+            }
+          ]
+        }
+      ]
     },
     "student-91d0ba84-a18b-4faa-877f-234673907f24":{
       "name":"David Nolen",
-      "avatar": "https://avatars2.githubusercontent.com/u/13516?s=460&v=4",
+      "avatar":"https://avatars2.githubusercontent.com/u/13516?s=460&v=4",
       "stoplight":"yellow",
       "github":"swannodette",
-      "lastGitHubCommit":"2018-05-05T15:59:48Z"
+      "lastGitHubCommit":"2018-05-05T15:59:48Z",
+      "events":[
+        {
+          "timeAgo":"yesterday",
+          "recordedBy":"Chris Oakman",
+          "tags":[
+            {
+              "label":"High Comprehension",
+              "status":"good"
+            },
+            {
+              "label":"High Energy",
+              "status":"good"
+            }
+          ]
+        }
+      ]
     },
     "student-598862e7-6739-47bd-a6aa-dc9a42cd60b0":{
       "name":"Guido van Rossum",
-      "avatar": "https://avatars3.githubusercontent.com/u/2894642?s=460&v=4",
+      "avatar":"https://avatars3.githubusercontent.com/u/2894642?s=460&v=4",
       "stoplight":"red",
       "github":"gvanrossum",
-      "lastGitHubCommit":"2018-05-19T14:20:45Z"
+      "lastGitHubCommit":"2018-05-19T14:20:45Z",
+      "events":[
+        {
+          "timeAgo":"yesterday",
+          "recordedBy":"Amanda Shih",
+          "tags":[
+            {
+              "label":"Low Energy",
+              "status":"bad"
+            },
+            {
+              "label":"Low Work Output",
+              "status":"bad"
+            }
+          ]
+        }
+      ]
     },
     "student-ffa52734-0d5d-4b70-bf4d-fb5e7bd1f232":{
       "name":"Rebecca Murphey",
-      "avatar": "https://avatars2.githubusercontent.com/u/58987?s=460&v=4",
+      "avatar":"https://avatars2.githubusercontent.com/u/58987?s=460&v=4",
       "stoplight":"green",
       "github":"rmurphey",
-      "lastGitHubCommit":"2018-05-19T17:17:54Z"
+      "lastGitHubCommit":"2018-05-19T17:17:54Z",
+      "events":[
+        {
+          "timeAgo":"3 hours ago",
+          "recordedBy":"Eric the TA",
+          "comment":"Rebecca was really excited when her website worked.",
+          "tags":[
+            {
+              "label":"High Energy",
+              "status":"good"
+            },
+            {
+              "label":"High Work Output",
+              "status":"good"
+            }
+          ]
+        }
+      ]
     },
     "student-61520e06-581d-4bf7-b748-06b1728a1818":{
       "name":"Mike Fikes",
-      "avatar": "https://avatars0.githubusercontent.com/u/1723464?s=460&v=4",
+      "avatar":"https://avatars0.githubusercontent.com/u/1723464?s=460&v=4",
       "stoplight":"yellow",
       "github":"mfikes",
-      "lastGitHubCommit":"2018-05-18T19:52:03Z"
+      "lastGitHubCommit":"2018-05-18T19:52:03Z",
+      "events":[
+        {
+          "isOldEvent":true,
+          "timeAgo":"4 days ago",
+          "recordedBy":"Jimmy the TA",
+          "comment":"Mike had a lot of questions about functions. I think we worked through most of it though."
+        }
+      ]
     },
     "student-063f3ed4-808c-4296-b152-602e5b72ae29":{
       "name":"John Resig",
-      "avatar": "https://avatars2.githubusercontent.com/u/1615?s=460&v=4",
+      "avatar":"https://avatars2.githubusercontent.com/u/1615?s=460&v=4",
       "stoplight":"red",
       "github":"jeresig",
-      "lastGitHubCommit":"2018-05-20T02:36:54Z"
+      "lastGitHubCommit":"2018-05-20T02:36:54Z",
+      "events":[
+        {
+          "timeAgo":"2 hours ago",
+          "recordedBy":"Chris Oakman",
+          "comment":"John was really struggling with a basic for loop.",
+          "tags":[
+            {
+              "label":"Low Comprehension",
+              "status":"bad"
+            },
+            {
+              "label":"High Frustration",
+              "status":"really-bad"
+            }
+          ]
+        }
+      ]
     },
     "student-0dad8e75-7f35-4b10-927f-a3a94f721363":{
       "name":"Mike Bostock",
-      "avatar": "https://avatars3.githubusercontent.com/u/230541?s=460&v=4",
+      "avatar":"https://avatars3.githubusercontent.com/u/230541?s=460&v=4",
       "stoplight":"yellow",
       "github":"mbostock",
-      "lastGitHubCommit":"2018-05-19T03:50:57Z"
+      "lastGitHubCommit":"2018-05-19T03:50:57Z",
+      "events":[
+        {
+          "timeAgo":"yesterday",
+          "recordedBy":"Eric the TA",
+          "tags":[
+            {
+              "label":"High Social Engagement",
+              "status":"good"
+            }
+          ]
+        }
+      ]
     },
     "student-cbc8a496-3fa9-4ef8-9b0c-262391184c7c":{
       "name":"Linus Torvalds",
-      "avatar": "https://avatars0.githubusercontent.com/u/1024025?s=460&v=4",
+      "avatar":"https://avatars0.githubusercontent.com/u/1024025?s=460&v=4",
       "stoplight":"yellow",
       "github":"torvalds",
-      "lastGitHubCommit":"2018-05-19T14:45:38Z"
+      "lastGitHubCommit":"2018-05-19T14:45:38Z",
+      "events":[
+        {
+          "isOldEvent":true,
+          "timeAgo":"4 days ago",
+          "stoplight":"yellow",
+          "recordedBy":"Chris Oakman"
+        }
+      ]
     },
     "student-5771b1d3-bc19-49f3-8791-2dde5601dc7b":{
       "name":"José Valim",
-      "avatar": "https://avatars0.githubusercontent.com/u/9582?s=460&v=4",
+      "avatar":"https://avatars0.githubusercontent.com/u/9582?s=460&v=4",
       "stoplight":"green",
       "github":"josevalim",
-      "lastGitHubCommit":"2018-04-19T14:22:38Z"
+      "lastGitHubCommit":"2018-04-19T14:22:38Z",
+      "events":[
+        {
+          "timeAgo":"2 days ago",
+          "recordedBy":"Jimmy the TA",
+          "tags":[
+            {
+              "label":"High Motivation",
+              "status":"good"
+            }
+          ]
+        }
+      ]
     }
   }
 }

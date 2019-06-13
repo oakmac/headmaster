@@ -5,6 +5,7 @@
   "students":{
     "student-07be7b0c-80c9-4480-a540-57db661806b8":{
       "name":"Rich Hickey",
+      "shortName": "Rich",
       "avatar":"https://avatars1.githubusercontent.com/u/34045?s=460&v=4",
       "stoplight":"green",
       "github":"richhickey",
@@ -30,6 +31,7 @@
     },
     "student-2a3c740e-603e-4d20-9061-c45b26611239":{
       "name":"Jeremy Ashkenas",
+      "shortName": "Jeremy",
       "avatar":"https://avatars2.githubusercontent.com/u/4732?s=460&v=4",
       "stoplight":"green",
       "github":"jashkenas",
@@ -51,6 +53,7 @@
     },
     "student-91d0ba84-a18b-4faa-877f-234673907f24":{
       "name":"David Nolen",
+      "shortName": "David",
       "avatar":"https://avatars2.githubusercontent.com/u/13516?s=460&v=4",
       "stoplight":"yellow",
       "github":"swannodette",
@@ -74,6 +77,7 @@
     },
     "student-598862e7-6739-47bd-a6aa-dc9a42cd60b0":{
       "name":"Guido van Rossum",
+      "shortName": "Guido",
       "avatar":"https://avatars3.githubusercontent.com/u/2894642?s=460&v=4",
       "stoplight":"red",
       "github":"gvanrossum",
@@ -97,6 +101,7 @@
     },
     "student-ffa52734-0d5d-4b70-bf4d-fb5e7bd1f232":{
       "name":"Rebecca Murphey",
+      "shortName": "Rebecca",
       "avatar":"https://avatars2.githubusercontent.com/u/58987?s=460&v=4",
       "stoplight":"green",
       "github":"rmurphey",
@@ -121,6 +126,7 @@
     },
     "student-61520e06-581d-4bf7-b748-06b1728a1818":{
       "name":"Mike Fikes",
+      "shortName": "Mike",
       "avatar":"https://avatars0.githubusercontent.com/u/1723464?s=460&v=4",
       "stoplight":"yellow",
       "github":"mfikes",
@@ -136,6 +142,7 @@
     },
     "student-063f3ed4-808c-4296-b152-602e5b72ae29":{
       "name":"John Resig",
+      "shortName": "John",
       "avatar":"https://avatars2.githubusercontent.com/u/1615?s=460&v=4",
       "stoplight":"red",
       "github":"jeresig",
@@ -160,6 +167,7 @@
     },
     "student-0dad8e75-7f35-4b10-927f-a3a94f721363":{
       "name":"Mike Bostock",
+      "shortName": "Mike",
       "avatar":"https://avatars3.githubusercontent.com/u/230541?s=460&v=4",
       "stoplight":"yellow",
       "github":"mbostock",
@@ -179,6 +187,7 @@
     },
     "student-cbc8a496-3fa9-4ef8-9b0c-262391184c7c":{
       "name":"Linus Torvalds",
+      "shortName": "Linus",
       "avatar":"https://avatars0.githubusercontent.com/u/1024025?s=460&v=4",
       "stoplight":"yellow",
       "github":"torvalds",
@@ -194,6 +203,7 @@
     },
     "student-5771b1d3-bc19-49f3-8791-2dde5601dc7b":{
       "name":"José Valim",
+      "shortName": "José",
       "avatar":"https://avatars0.githubusercontent.com/u/9582?s=460&v=4",
       "stoplight":"green",
       "github":"josevalim",

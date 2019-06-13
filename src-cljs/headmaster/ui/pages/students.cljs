@@ -333,7 +333,7 @@
       [common/ClassHeader]
       [common/PrimaryNav]
       [:div.content
-        [ToggleViewButtons]
+        ; [ToggleViewButtons]
         (case view-type
           "TABLE_VIEW" [StudentsTable]
           "TILES_VIEW" [StudentsTiles]

@@ -17,6 +17,8 @@ npm install
 
 ### Backend
 
+The backend setup uses [Rob McClarty's](https://github.com/robmclarty/knex-express-project-sample) as a starting point.
+
 ```sh
 # Runs latest migrations and starts up the backend server.
 # Backend server will reload with changes (uses nodemon) underneath.

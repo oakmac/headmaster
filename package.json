@@ -9,16 +9,23 @@
   "license": "ISC",
   "scripts": {
     "migrate": "knex migrate:latest",
-    "start": "npm run migrate; nodemon ./src-backend/app/index.js"
+    "backend-dev": "npm run migrate; nodemon ./src-backend/app/index.js",
+    "frontend-dev": "shadow-cljs watch main",
+    "start": "npm run backend-dev; npm run frontend-dev"
   },
   "dependencies": {
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.4",
     "create-react-class": "15.6.3",
     "express": "4.17.1",
+    "express-session": "^1.16.2",
     "github-api": "3.0.0",
     "moment": "2.24.0",
+    "mustache-express": "^1.2.8",
     "passport": "0.4.0",
     "passport-github": "1.1.0",
     "pg": "7.11.0",
+    "ramda": "^0.26.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "sqlite3": "4.0.8"

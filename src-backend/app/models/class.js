@@ -2,14 +2,13 @@
 
 const createGuts = require('../helpers/model-guts')
 
-const name = 'Student'
-const tableName = 'students'
+const name = 'Class'
+const tableName = 'Classes'
 
 const selectableProps = [
   'id',
-  'classId',
-  'githubUsername',
-  'displayName',
+  'slug',
+  'name',
   'createdAt',
 ]
 

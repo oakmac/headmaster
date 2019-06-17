@@ -3,7 +3,7 @@ const GitHubStrategy = require('passport-github').Strategy
 
 const {
   loginWithGithub, getUserFromSession,
-} = require('../../controllers/user')
+} = require('../../controllers/login')
 
 function configurePassport() {
   passport.use(new GitHubStrategy({

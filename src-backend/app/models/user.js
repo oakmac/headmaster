@@ -3,7 +3,7 @@
 const createGuts = require('../helpers/model-guts')
 
 const name = 'User'
-const tableName = 'users'
+const tableName = 'Users'
 
 // Properties that are allowed to be selected from the database for reading.
 // (e.g., `password` is not included and thus cannot be selected)

@@ -25,7 +25,7 @@ app.use('/dashboard', express.static(PUBLIC_PATH))
 
 app.use('/', [
   require('./routes/login'),
-// require('./routes/user_routes'),
+  require('./routes/api'),
 // require('./routes/project_routes')
 ])
 // app.get('/login', (req, res) => res.send('Hello World!'))

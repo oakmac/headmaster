@@ -23,11 +23,19 @@ app.use(passport.session())
 app.use('/dashboard', ensureLoggedIn('/login'))
 app.use('/dashboard', express.static(PUBLIC_PATH))
 
+// should send error, move to middlewares later
+app.use('/api', function(req, res, next) {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    res.status(401).json({
+      error: 'user not authorized',
+    })
+  }
+  next()
+})
+
 app.use('/', [
   require('./routes/login'),
   require('./routes/api'),
-// require('./routes/project_routes')
 ])
-// app.get('/login', (req, res) => res.send('Hello World!'))
 
-app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
+app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))

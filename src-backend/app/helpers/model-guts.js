@@ -52,6 +52,18 @@ module.exports = ({
       })
       .timeout(timeout)
   }
+
+  const bulkCreate = (items = []) => {
+    const insertableItems = R.map((item) => {
+      return {
+        ...item,
+        id: `${name}-${uuid()}`
+      }
+    })(items)
+
+    return knex.insert(insertableItems)
+      .into(tableName)
+  }
   
   const findById = id => knex.select(selectableProps)
     .from(tableName)
@@ -79,6 +91,7 @@ module.exports = ({
     selectableProps,
     timeout,
     create,
+    bulkCreate,
     findAll,
     find,
     findOne,

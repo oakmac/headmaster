@@ -17,7 +17,7 @@ module.exports = knex => {
     knex,
     name,
     tableName,
-    selectableProps
+    selectableProps,
   })
 
   return {

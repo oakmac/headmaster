@@ -19,7 +19,7 @@
     "create-react-class": "15.6.3",
     "express": "4.17.1",
     "express-session": "^1.16.2",
-    "github-api": "3.0.0",
+    "github-api": "^3.2.2",
     "moment": "2.24.0",
     "mustache-express": "^1.2.8",
     "passport": "0.4.0",

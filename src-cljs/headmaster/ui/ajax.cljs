@@ -20,4 +20,4 @@
 (defn create-touchpoint [touchpoint success-fn error-fn]
   (if (in-mock-mode?)
     (js/setTimeout success-fn (+ 250 (rand-int 500)))
-    (timbre/info "TODO: write me!")))
+    (timbre/info "TODO: ajax/create-touchpoint write me!")))

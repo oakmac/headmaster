@@ -2,9 +2,10 @@
   "Students page"
   (:require
     [clojure.string :as str]
+    [headmaster.ui.constants :refer [ellipsis]]
     [headmaster.ui.html.common :as common]
     [headmaster.ui.util :as util]
-    [oops.core :refer [ocall]]
+    [oops.core :refer [ocall oget]]
     [re-frame.core :as rf]
     [taoensso.timbre :as timbre]))
 
@@ -42,6 +43,11 @@
     (get-in db [:students-page :sort-dir] default-sort-dir)))
 
 (rf/reg-sub
+  :students-page/search-txt
+  (fn [db _]
+    (get-in db [:students-page :search-txt] "")))
+
+(rf/reg-sub
   :students-vec
   :<- [:class]
   (fn [class _]
@@ -51,11 +57,26 @@
       (:students class))))
 
 (rf/reg-sub
-  :sorted-students
+  :filtered-students
   :<- [:students-vec]
+  :<- [:students-page/search-txt]
+  (fn [[students-vec search-txt] _]
+    (let [lc-search-txt (str/lower-case search-txt)
+          filter-fn (if (str/blank? search-txt)
+                      (constantly true)
+                      (fn [{:keys [github name shortName]}]
+                        (or (str/includes? (str/lower-case name) lc-search-txt)
+                            (str/includes? (str/lower-case shortName) lc-search-txt)
+                            (str/includes? (str/lower-case github) lc-search-txt))))]
+      (filter filter-fn students-vec))))
+
+(rf/reg-sub
+  :sorted-and-filtered-students
+  :<- [:filtered-students]
   :<- [:students-page/sort-col]
   :<- [:students-page/sort-dir]
-  (fn [[students-vec sort-col sort-dir] _]
+  :<- [:students-page/search-txt]
+  (fn [[students-vec sort-col sort-dir search-txt] _]
     (let [compare-fn (cond
                        (= sort-col :stoplight) compare-stoplight
                        (= sort-col :github) compare-github
@@ -89,6 +110,11 @@
   :students-page/set-sort-dir
   (fn [db [_ sort-dir]]
     (assoc-in db [:students-page :sort-dir] sort-dir)))
+
+(rf/reg-event-db
+  :students-page/set-search-txt
+  (fn [db [_ search-txt]]
+    (assoc-in db [:students-page :search-txt] search-txt)))
 
 (rf/reg-event-db
   :students-page/flip-sort-dir
@@ -155,7 +181,7 @@
 
 (defn StudentsTable
   []
-  (let [sorted-students @(rf/subscribe [:sorted-students])]
+  (let [sorted-students @(rf/subscribe [:sorted-and-filtered-students])]
     [:table.table.is-striped.is-hoverable.is-fullwidth
       [THead]
       [:tbody
@@ -314,7 +340,7 @@
 
 (defn StudentsTiles
   []
-  (let [sorted-students @(rf/subscribe [:sorted-students])
+  (let [sorted-students @(rf/subscribe [:sorted-and-filtered-students])
         student-chunks (partition num-columns num-columns (repeat false) sorted-students)]
     [:div
       (map-indexed TileRow student-chunks)]))
@@ -327,13 +353,26 @@
     [:p.control
       [:button.button {:on-click #(rf/dispatch [:students-page/set-view-type "TILES_VIEW"])} "Tiles View"]]])
 
+(defn SearchBar []
+  (let [search-txt @(rf/subscribe [:students-page/search-txt])]
+    [:div
+      [:input.input.is-medium
+        {:on-change #(rf/dispatch [:students-page/set-search-txt (oget % "currentTarget.value")])
+         :placeholder (str "Search students " ellipsis)
+         :value search-txt}]]))
+
+(defn FilterControls []
+  [:div.columns
+    [:div.column.is-two-thirds [ToggleViewButtons]]
+    [:div.column.is-one-third [SearchBar]]])
+
 (defn StudentsPage []
   (let [view-type @(rf/subscribe [:students-page/view-type])]
     [:section.section
       [common/ClassHeader]
       [common/PrimaryNav]
       [:div.content
-        ; [ToggleViewButtons]
+        [FilterControls]
         (case view-type
           "TABLE_VIEW" [StudentsTable]
           "TILES_VIEW" [StudentsTiles]

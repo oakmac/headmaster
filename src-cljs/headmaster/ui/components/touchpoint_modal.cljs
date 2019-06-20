@@ -103,22 +103,22 @@
   (let [new-touchpoint @(rf/subscribe [:touchpoint-modal/new-touchpoint])
         status (:stoplight new-touchpoint)]
    [:div.field
-     [:div.label "Stoplight Status"
-       [:div.control
-         [:div {:class "tabs is-toggle"}
-           [:ul
-             [:li {:class (when (= status "green") "is-active")}
-               [:a {:href "#", :on-click (partial click-stoplight "green")}
-                 [common/Stoplight "green"]
-                 [:span "Green"]]]
-             [:li {:class (when (= status "yellow") "is-active")}
-               [:a {:href "#", :on-click (partial click-stoplight "yellow")}
-                 [common/Stoplight "yellow"]
-                 [:span "Yellow"]]]
-             [:li {:class (when (= status "red") "is-active")}
-               [:a {:href "#", :on-click (partial click-stoplight "red")}
-                 [common/Stoplight "red"]
-                 [:span "Red"]]]]]]]]))
+     [:label.label "Stoplight Status"]
+     [:div.control
+       [:div {:class ["tabs" "is-toggle"]}
+         [:ul
+           [:li {:class (when (= status "green") "is-active")}
+             [:a {:href "#", :on-click (partial click-stoplight "green")}
+               [common/Stoplight "green"]
+               [:span "Green"]]]
+           [:li {:class (when (= status "yellow") "is-active")}
+             [:a {:href "#", :on-click (partial click-stoplight "yellow")}
+               [common/Stoplight "yellow"]
+               [:span "Yellow"]]]
+           [:li {:class (when (= status "red") "is-active")}
+             [:a {:href "#", :on-click (partial click-stoplight "red")}
+               [common/Stoplight "red"]
+               [:span "Red"]]]]]]]))
 
 (defn- random-comment-placeholder []
   (rand-nth

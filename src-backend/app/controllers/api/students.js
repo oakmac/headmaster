@@ -17,14 +17,17 @@ function getTouchpointsForStudent(req, res, next) {
 
 function postTouchpointForStudent(req, res, next) {
   const userId = req.user.id
-  const body = req.body
+  const touchpoints = req.body.touchpoints
   const studentId = req.params.studentId
 
-  return Touchpoint.create({
-      userId,
-      studentId,
-      body,
-    })
+  return Touchpoint.bulkCreate(
+    R.map(
+      (body) => ({
+        body,
+        userId,
+        studentId,
+      })
+    )(touchpoints))
     .then(function(createdTouchpoint) {
       res.json({
         success: 'touchpoint added',

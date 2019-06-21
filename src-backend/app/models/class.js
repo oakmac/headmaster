@@ -1,6 +1,7 @@
 'use strict'
 
 const initStudentModel = require('./student')
+const initTouchpointModel = require('./touchpoint')
 const R = require('ramda')
 
 const createGuts = require('../helpers/model-guts')
@@ -24,6 +25,7 @@ module.exports = knex => {
   })
 
   const Student = initStudentModel(knex)
+  const Touchpoint = initTouchpointModel(knex)
 
   function selectBySlug(classSlug) {
     return knex
@@ -66,22 +68,28 @@ module.exports = knex => {
     })
   }
 
-  // function getTouchpointsForClass(classSlug) {
-  //   return knex
-  //     .from('StudentsEvents')
-  //     .leftJoin(
-  //       'Classes',
-  //       `${tableName}.classId`, 'Classes.id',
-  //     )
-  //     .
-  //     .where({
-  //       'Classes.slug': classSlug,
-  //     })
-  // }
+  function getTouchpointsForClass(classSlug) {
+    return knex
+      .from('StudentsEvents')
+      .leftJoin(
+        'Students',
+        'StudentsEvents.studentId', 'Students.id'
+      )
+      // .join(
+      //   'Classes',
+      //   'Students.classId', 'Classes.id',
+      // )
+      // .where({
+      //   'Classes.slug': classSlug,
+      // })
+      .select()
+      .then(R.map(Touchpoint.parseFromSQLite))
+  }
 
   return {
     ...guts,
     createAndAssignStudentsToClass,
     getStudentsForClass,
+    getTouchpointsForClass,
   }
 }

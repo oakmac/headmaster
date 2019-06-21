@@ -49,9 +49,21 @@ function getStudentsForClass(req, res, next) {
     .catch(next)
 }
 
+function getClassDashboard(req, res, next) {
+  const classSlug = req.params.classSlug
+
+  return Class.getTouchpointsForClass(classSlug)
+    .then(function(toupoints) {
+      res.json(toupoints)
+      next()
+    })
+    .catch(next)
+}
+
 module.exports = {
   getClassesForAuthorizedUser,
   setClassesForAuthorizedUser,
   setStudentsForClass,
   getStudentsForClass,
+  getClassDashboard,
 }

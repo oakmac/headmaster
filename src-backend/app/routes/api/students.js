@@ -1,12 +1,29 @@
 const {
   getTouchpointsForStudent,
-  postTouchpointForStudent,
+  postTouchpointsForStudent,
   } = require('../../controllers/api/students')
   
 const router = require('express').Router()
 
 router.route('/students/:studentId/touchpoints')
   .get(getTouchpointsForStudent)
-  .post(postTouchpointForStudent)
+  // example post body:
+  // {
+  //   "touchpoints": [
+  //     {
+  //       "tags":[],
+  //       "something":""
+  //     },
+  //     {
+  //       "tags":[],
+  //       "something":""
+  //     },
+  //     {
+  //       "tags":[],
+  //       "something":""
+  //     }
+  //   ]
+  // }
+  .post(postTouchpointsForStudent)
 
 module.exports = router

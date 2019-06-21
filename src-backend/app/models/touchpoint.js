@@ -22,30 +22,41 @@ module.exports = knex => {
     selectableProps
   })
 
-  function create(props) {
-    const body = JSON.stringify(props.body)
+  const stringifyForSQLite = R.evolve({
+    body: JSON.stringify,
+  })
 
-    return guts.create({
-      ...props,
-      body,
-    })
+  const parseFromSQLite = R.evolve({
+    body: JSON.parse,
+  })
+
+  function create(props) {
+    return guts.create(
+      stringifyForSQLite(props)
+    )
+  }
+
+  function bulkCreate(array) {
+    const touchpoints = R.map(
+      stringifyForSQLite
+    )(array)
+
+    return guts
+      .bulkCreate(touchpoints)
   }
 
   function update(props) {
-    const body = JSON.stringify(props.body)
-
-    return guts.update({
-      ...props,
-      body,
-    })
+    return guts.update(
+      stringifyForSQLite(props)
+    )
   }
 
   function find(filters) {
     return guts.find(filters)
       .then(function(results) {
-        return R.map(R.evolve({
-          body: JSON.parse,
-        }))(results)
+        return R.map(
+          parseFromSQLite
+        )(results)
       })
   }
 
@@ -56,5 +67,9 @@ module.exports = knex => {
     create,
     update,
     find,
+    bulkCreate,
+    // could export outside of init, but TODO for later.
+    stringifyForSQLite,
+    parseFromSQLite,
   }
 }

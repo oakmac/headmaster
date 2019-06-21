@@ -1,4 +1,5 @@
 const { Touchpoint } = require('../../models')
+const R = require('ramda')
 
 // TODO make middleware for checking if student is part of user's class.
 
@@ -15,7 +16,7 @@ function getTouchpointsForStudent(req, res, next) {
     .catch(next)
 }
 
-function postTouchpointForStudent(req, res, next) {
+function postTouchpointsForStudent(req, res, next) {
   const userId = req.user.id
   const touchpoints = req.body.touchpoints
   const studentId = req.params.studentId
@@ -40,5 +41,5 @@ function postTouchpointForStudent(req, res, next) {
 
 module.exports = {
   getTouchpointsForStudent,
-  postTouchpointForStudent,
+  postTouchpointsForStudent,
 }

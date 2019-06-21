@@ -3,6 +3,7 @@ const {
   setClassesForAuthorizedUser,
   setStudentsForClass,
   getStudentsForClass,
+  getClassDashboard,
 } = require('../../controllers/api/classes')
 
 const router = require('express').Router()
@@ -38,5 +39,8 @@ router.route('/classes/:classSlug/students')
   //   ]
   // }
   .post(setStudentsForClass)
+
+router.route('/classes/:classSlug/touchpoints')
+  .get(getClassDashboard)
 
 module.exports = router

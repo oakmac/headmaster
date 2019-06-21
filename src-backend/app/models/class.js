@@ -75,14 +75,23 @@ module.exports = knex => {
         'Students',
         'StudentsEvents.studentId', 'Students.id'
       )
-      // .join(
-      //   'Classes',
-      //   'Students.classId', 'Classes.id',
-      // )
-      // .where({
-      //   'Classes.slug': classSlug,
-      // })
-      .select()
+      .join(
+        'Classes',
+        'Students.classId', 'Classes.id',
+      )
+      .where({
+        'Classes.slug': classSlug,
+      })
+      .select([
+        'StudentsEvents.id',
+        'StudentsEvents.body',
+        'StudentsEvents.studentId',
+        'Students.classId',
+        'Students.displayName',
+        'Students.githubUsername',
+        'Classes.slug',
+        'Classes.name',
+      ])
       .then(R.map(Touchpoint.parseFromSQLite))
   }
 

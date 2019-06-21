@@ -3,7 +3,7 @@
 const createGuts = require('../helpers/model-guts')
 
 const name = 'Student'
-const tableName = 'students'
+const tableName = 'Students'
 
 const selectableProps = [
   'id',

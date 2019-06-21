@@ -66,6 +66,19 @@ module.exports = knex => {
     })
   }
 
+  // function getTouchpointsForClass(classSlug) {
+  //   return knex
+  //     .from('StudentsEvents')
+  //     .leftJoin(
+  //       'Classes',
+  //       `${tableName}.classId`, 'Classes.id',
+  //     )
+  //     .
+  //     .where({
+  //       'Classes.slug': classSlug,
+  //     })
+  // }
+
   return {
     ...guts,
     createAndAssignStudentsToClass,

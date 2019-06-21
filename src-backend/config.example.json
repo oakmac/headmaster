@@ -1,0 +1,8 @@
+{
+    "environmentVariables": {
+      "GITHUB_CLIENT_ID": "example-github-client-id-here",
+      "GITHUB_CLIENT_SECRET": "example-github-secret-here",
+      "PORT": 3000,
+      "HOST": "http://localhost:3000"
+    }
+  }

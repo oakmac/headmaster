@@ -8,7 +8,10 @@ function getConfig() {
   try {
     config = require('../config.json')
   } catch(noConfig) {
-    // log message about setting up config
+    console.error(`
+      Set up src-backend/config.json following the
+      src-backend/config.example.json.
+    `)
   }
 
   return config

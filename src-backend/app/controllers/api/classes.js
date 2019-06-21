@@ -16,7 +16,7 @@ function getClassesForAuthorizedUser(req, res, next) {
 function setClassesForAuthorizedUser(req, res, next) {
   const userId = req.user.id
 
-  return UserClass.setClassesForUser(userId, req.body)
+  return UserClass.setClassesForUser(userId, req.body.classes)
     .then(function(classes) {
       res.json(classes)
       next()

@@ -30,7 +30,7 @@ const getMostRecentTouchpointProp = (prop) => (R.pipe(
   R.find(R.hasPath(['body', prop])),
   R.path(['body', prop]),
 ))
-
+// TODO parsing is slow github json, consider changing to jsonb, or filtering and omitting properties before caching
 const transformStudent = R.pipe(
   R.omit([
     'id',
@@ -71,7 +71,8 @@ const transformStudent = R.pipe(
       filterForEventsByType,
       R.groupBy(R.pipe(
         R.prop('created_at'),
-        R.partialRight(format, ['YYYY-WW']),
+        // group by year, week of year, and day of week.
+        R.partialRight(format, ['YYYY-WW-d']),
       )),
     ),
   }),

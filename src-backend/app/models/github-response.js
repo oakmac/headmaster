@@ -79,7 +79,11 @@ module.exports = knex => {
         'Students.id', `latest.studentId`
       )
       .where('Students.classId', classId)
-      .andWhere('latest.createdAt', '<', subDays(new Date(), daysSince))
+      .andWhere(function(){
+        this
+          .where('latest.createdAt', '<', subDays(new Date(), daysSince))
+          .orWhereNull('latest.createdAt')
+      })
       .select({
         studentId: 'Students.id',
         githubUsername: 'Students.githubUsername',

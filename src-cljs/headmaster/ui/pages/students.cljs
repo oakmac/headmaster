@@ -23,8 +23,8 @@
            (get stoplight-map b)))
 
 (defn- compare-github [a b]
-  (compare (str/lower-case a)
-           (str/lower-case b)))
+  (compare (util/safe-lower-case a)
+           (util/safe-lower-case b)))
 
 ;;------------------------------------------------------------------------------
 ;; Subscriptions
@@ -65,9 +65,9 @@
           filter-fn (if (str/blank? search-txt)
                       (constantly true)
                       (fn [{:keys [github name shortName]}]
-                        (or (str/includes? (str/lower-case name) lc-search-txt)
-                            (str/includes? (str/lower-case shortName) lc-search-txt)
-                            (str/includes? (str/lower-case github) lc-search-txt))))]
+                        (or (str/includes? (util/safe-lower-case name) lc-search-txt)
+                            (str/includes? (util/safe-lower-case shortName) lc-search-txt)
+                            (str/includes? (util/safe-lower-case github) lc-search-txt))))]
       (filter filter-fn students-vec))))
 
 (rf/reg-sub

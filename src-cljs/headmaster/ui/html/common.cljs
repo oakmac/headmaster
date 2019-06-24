@@ -58,4 +58,4 @@
     {:class (when small? "is-small")}
     (if (= "red" status)
       [SVGIcon "alert-triangle" "stoplight-red"]
-      [:span {:class (str "stoplight " (str/lower-case status))}])])
+      [:span {:class (str "stoplight " (util/safe-lower-case status))}])])

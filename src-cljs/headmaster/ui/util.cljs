@@ -33,3 +33,6 @@
 (defn prevent-default [js-evt]
   (when (fn? (oget js-evt "preventDefault"))
     (ocall js-evt "preventDefault")))
+
+(defn safe-lower-case [s]
+  (str/lower-case (str s)))

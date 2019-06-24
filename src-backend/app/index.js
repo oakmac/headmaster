@@ -1,4 +1,6 @@
 const path = require('path')
+const fs = require('fs-plus')
+const mustache = require('mustache')
 
 const express = require('express')
 const passport = require('passport')
@@ -20,6 +22,17 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use(express.static(PUBLIC_PATH))
+
+const viewsDir = path.resolve(__dirname, 'views')
+const homepageTemplate = slurpFile(path.join(viewsDir, 'homepage.mustache'))
+
+function homepage (req, res) {
+  res.send(mustache.render(homepageTemplate, {}))
+}
+
+app.get('/', homepage)
+
 app.use('/dashboard', ensureLoggedIn('/login/github'))
 app.use('/dashboard', express.static(PUBLIC_PATH))
 
@@ -39,3 +52,11 @@ app.use('/', [
 ])
 
 app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))
+
+// -----------------------------------------------------------------------------
+// Utils
+// TODO: move this to it's own namespace / module
+
+function slurpFile (filename) {
+  return fs.readFileSync(filename, {encoding: 'utf8'})
+}

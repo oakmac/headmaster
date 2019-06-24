@@ -68,37 +68,48 @@ module.exports = knex => {
     })
   }
 
-  function getTouchpointsForClass(classSlug) {
-    return knex
-      .from('StudentsEvents')
-      .leftJoin(
-        'Students',
-        'StudentsEvents.studentId', 'Students.id'
-      )
-      .join(
-        'Classes',
-        'Students.classId', 'Classes.id',
-      )
-      .where({
-        'Classes.slug': classSlug,
-      })
-      .select([
-        'StudentsEvents.id',
-        'StudentsEvents.body',
-        'StudentsEvents.studentId',
-        'Students.classId',
-        'Students.displayName',
-        'Students.githubUsername',
-        'Classes.slug',
-        'Classes.name',
-      ])
-      .then(R.map(Touchpoint.parseFromSQLite))
+  function getDashboardForClass(classSlug) {
+
+    return knex.transaction(function(transaction) {
+      return selectBySlug(classSlug)
+        .transacting(transaction)
+        .select()
+        .then(function(classes) {
+          const classInfo = R.path([0])(classes)
+          const classId = classInfo.id
+
+          return Student.find({
+              classId
+            })
+            .transacting(transaction)
+            .then(function(students) {
+              return Promise.all(R.map((student) => (
+                  knex.from('StudentsEvents')
+                    .where({
+                      studentId: student.id,
+                    })
+                    .leftJoin('Users', 'StudentsEvents.userId', 'Users.id')
+                    .select([
+                      'StudentsEvents.body',
+                      'StudentsEvents.createdAt',
+                      'Users.displayName',
+                    ])
+                    .orderBy('StudentsEvents.createdAt', 'desc')
+                    .transacting(transaction)
+                    .map(Touchpoint.parseFromSQLite)
+                    .then(R.assoc('events', R.__, student))
+                  )
+                )(students))
+                .then(R.assoc('students', R.__, classInfo))
+            })
+        })
+    })
   }
 
   return {
     ...guts,
     createAndAssignStudentsToClass,
     getStudentsForClass,
-    getTouchpointsForClass,
+    getDashboardForClass,
   }
 }

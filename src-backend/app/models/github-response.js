@@ -1,15 +1,17 @@
 'use strict'
-
-const createGuts = require('../helpers/model-guts')
+const {
+  subDays
+} = require('date-fns')
 const R = require('ramda')
 
-const name = 'Touchpoint'
-const tableName = 'StudentsEvents'
+const createGuts = require('../helpers/model-guts')
+
+const name = 'StudentGithubResponse'
+const tableName = 'StudentsGithubResponses'
 
 const selectableProps = [
   'id',
   'studentId',
-  'userId',
   'body',
   'createdAt',
 ]
@@ -22,6 +24,7 @@ module.exports = knex => {
     selectableProps
   })
 
+  // TODO need to just make this common guts.
   const stringifyForSQLite = R.evolve({
     body: JSON.stringify,
   })
@@ -58,7 +61,30 @@ module.exports = knex => {
       })
   }
 
-  // TODO finish JSON.parse on finds, including what get's returned on create
+  function getLatestResponse() {
+    return knex.from(tableName)
+      .groupBy('studentId')
+      .orderBy('createdAt', 'desc')
+      .whereNotNull('body')
+  } 
+
+  // TODO make more flexible in time units since
+  function getStaleStudents(classId, daysSince = 1) {
+    return  knex.from('Students')
+      .leftJoin(
+        getLatestResponse()
+          .select(knex.raw(`max(${tableName}.createdAt) as createdAt, studentId, body`))
+          .as('latest')
+        ,
+        'Students.id', `latest.studentId`
+      )
+      .where('Students.classId', classId)
+      .andWhere('latest.createdAt', '<', subDays(new Date(), daysSince))
+      .select({
+        studentId: 'Students.id',
+        githubUsername: 'Students.githubUsername',
+      })
+  }
 
   return {
     ...guts,
@@ -69,5 +95,6 @@ module.exports = knex => {
     // could export outside of init, but TODO for later.
     stringifyForSQLite,
     parseFromSQLite,
+    getStaleStudents,
   }
 }

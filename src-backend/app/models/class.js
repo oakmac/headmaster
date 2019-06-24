@@ -79,7 +79,7 @@ module.exports = knex => {
           const classInfo = R.path([0])(classes)
           const classId = classInfo.id
 
-          return Student.find({
+          return Student.findWithGithub({
               classId
             })
             .transacting(transaction)

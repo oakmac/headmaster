@@ -1,6 +1,10 @@
 const R = require('ramda')
 const { mapDashboardSQLToResponse } = require('../../helpers/dashboard')
 
+const {
+  refreshStudentsGithubResponses,
+} = require('../../helpers/students-github')
+
 const { UserClass } = require('../../models')
 const { Class } = require('../../models')
 
@@ -12,8 +16,12 @@ function getDashboardForAuthorizedUser(req, res, next) {
   return UserClass.getClassesForUser(userId)
     .then(R.pipe(
       R.head,
-      R.pick('id'),
+      R.pick(['id']),
     ))
+    .then(function(classInfo){
+      return refreshStudentsGithubResponses(R.prop('id')(classInfo))
+        .then(R.always(classInfo))
+    })
     .then(Class.getDashboardForClass)
     .then(mapDashboardSQLToResponse)
     .then(function(dashboard) {

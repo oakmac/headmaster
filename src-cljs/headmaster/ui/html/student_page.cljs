@@ -1,7 +1,7 @@
 (ns headmaster.ui.html.student-page
   "Students page"
   (:require
-    [headmaster.ui.actions.students-page :as actions]
+    ; [headmaster.ui.actions.students-page :as actions]
     [headmaster.ui.html.common :refer [GitHubLink Stoplight SVGIcon]]
     [headmaster.ui.html.layout :refer [ClassPageWrapper]]
     [headmaster.ui.util :refer [js-log log]]

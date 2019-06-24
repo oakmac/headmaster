@@ -20,7 +20,8 @@
    "/students" "STUDENTS_PAGE"
    "/schedule" "SCHEDULE_PAGE"
    "/attendance" "ATTENDANCE_PAGE"
-   "/assignments" "ASSIGNMENTS_PAGE"})
+   "/assignments" "ASSIGNMENTS_PAGE"
+   "/manage-students" "MANAGE_STUDENTS_PAGE"})
 
 (defn- on-hash-change [_js-evt]
   (let [new-route (util/current-hash)

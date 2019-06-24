@@ -1,7 +1,10 @@
 (ns headmaster.ui.config
   (:import goog.Uri)
   (:require
+    [clojure.string :as str]
     [oops.core :refer [oget]]))
+
+(def on-development-page? (str/includes? (oget js/window "location.href") "development.html"))
 
 (defn- query-param-exists? [param]
   (-> (Uri. (oget js/window "location"))

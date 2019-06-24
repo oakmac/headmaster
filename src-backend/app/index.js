@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs-plus')
 const mustache = require('mustache')
+const knex = require('../config/database')
 
 const express = require('express')
 const passport = require('passport')
@@ -17,8 +18,20 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(require('cookie-parser')())
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }))
+
+const session = require('express-session')
+const KnexSessionStore = require('connect-session-knex')(session);
+const store = new KnexSessionStore({
+  knex,
+})
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  store,
+}))
+
 app.use(passport.initialize())
 app.use(passport.session())
 

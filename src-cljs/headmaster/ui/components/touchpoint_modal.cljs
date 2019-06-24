@@ -14,8 +14,9 @@
 
 (rf/reg-fx
   :save-new-touchpoint
-  (fn [new-touchpoint]
+  (fn [[student-id new-touchpoint]] ;; FIXME: Probably change this from a vector to an arg map
     (ajax/create-touchpoint
+      student-id
       new-touchpoint
       (fn []
         ;; TODO: re-fetch latest class status here?
@@ -86,11 +87,12 @@
 (rf/reg-event-fx
   :touchpoint-modal/save-touchpoint
   (fn [{:keys [db]} _]
-    (let [new-touchpoint (get-in db [:touchpoint-modal :touchpoint])]
+    (let [new-touchpoint (get-in db [:touchpoint-modal :touchpoint])
+          student-id (get-in db [:touchpoint-modal :student-id])]
       (if (empty-touchpoint? new-touchpoint)
         {:db (assoc-in db [:touchpoint-modal :error] nothing-entered-error-msg)}
         {:db (assoc-in db [:touchpoint-modal :saving?] true)
-         :save-new-touchpoint new-touchpoint}))))
+         :save-new-touchpoint [student-id new-touchpoint]}))))
 
 ;;------------------------------------------------------------------------------
 ;; Views

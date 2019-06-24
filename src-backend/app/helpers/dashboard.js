@@ -51,30 +51,30 @@ const transformStudent = R.pipe(
       R.head,
     ),
     github: R.prop('githubUsername'),
-    avatar: R.pipe(
-      R.prop('githubActivityResponse'),
-      R.head,
-      R.path(['actor', 'avatar_url']),
-    ),
-    lastGithubCommit: R.pipe(
-      R.prop('githubActivityResponse'),
-      R.head,
-      R.prop('created_at'),
-    ),
+    // avatar: R.pipe(
+    //   R.prop('githubActivityResponse'),
+    //   R.head,
+    //   R.path(['actor', 'avatar_url']),
+    // ),
+    // lastGithubCommit: R.pipe(
+    //   R.prop('githubActivityResponse'),
+    //   R.head,
+    //   R.prop('created_at'),
+    // ),
     stoplight: getMostRecentTouchpointProp('stoplight'),
     events: R.pipe(
       R.prop('events'),
       R.map(transformEvent),
     ),
-    githubActivityResponse: R.pipe(
-      R.prop('githubActivityResponse'),
-      filterForEventsByType,
-      R.groupBy(R.pipe(
-        R.prop('created_at'),
-        // group by year, week of year, and day of week.
-        R.partialRight(format, ['YYYY-WW-d']),
-      )),
-    ),
+    // githubActivityResponse: R.pipe(
+    //   R.prop('githubActivityResponse'),
+    //   filterForEventsByType,
+    //   R.groupBy(R.pipe(
+    //     R.prop('created_at'),
+    //     // group by year, week of year, and day of week.
+    //     R.partialRight(format, ['YYYY-WW-d']),
+    //   )),
+    // ),
   }),
 )
 

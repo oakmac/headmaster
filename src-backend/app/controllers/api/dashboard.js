@@ -18,10 +18,10 @@ function getDashboardForAuthorizedUser(req, res, next) {
       R.head,
       R.pick(['id']),
     ))
-    .then(function(classInfo){
-      return refreshStudentsGithubResponses(R.prop('id')(classInfo))
-        .then(R.always(classInfo))
-    })
+    // .then(function(classInfo){
+    //   return refreshStudentsGithubResponses(R.prop('id')(classInfo))
+    //     .then(R.always(classInfo))
+    // })
     .then(Class.getDashboardForClass)
     .then(mapDashboardSQLToResponse)
     .then(function(dashboard) {

@@ -56,7 +56,7 @@
     (fn []
       (timbre/error "Failed to fetch mock class data."))))
 
-(defn- start-polling-mock-data []
+(defn- start-polling-classroom-data []
   (fetch-mock-class-data)
   (js/setInterval fetch-mock-class-data 1000))
 
@@ -82,5 +82,4 @@
          (rf/dispatch-sync [:init-db])
          (routing/init!)
          (start-rendering!)
-         (when (in-mock-mode?)
-           (start-polling-mock-data)))))))
+         (start-polling-classroom-data))))))

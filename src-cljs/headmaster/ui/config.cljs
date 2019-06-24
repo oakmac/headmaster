@@ -4,6 +4,7 @@
     [clojure.string :as str]
     [oops.core :refer [oget]]))
 
+;; TODO: add the ability to override this via query param or localStorage
 (def on-development-page? (str/includes? (oget js/window "location.href") "development.html"))
 
 (defn- query-param-exists? [param]
@@ -11,9 +12,8 @@
       (.getQueryData)
       (.containsKey param)))
 
-;; FIXME: toggle these manually during development; switch to query-based later
 (def config
-  {:data-mode "MOCK_DATA"})
+  {:data-mode (if (query-param-exists? "mock-mode") "MOCK_DATA" "API_DATA")})
 
 (defn in-mock-mode? []
   (= "MOCK_DATA" (:data-mode config)))

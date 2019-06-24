@@ -10,10 +10,10 @@ module.exports = {
     useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
-      directory: `${ __dirname }/src-backend/db/migrations`
+      directory: `${__dirname}/src-backend/db/migrations`
     },
     seeds: {
-      directory: `${ __dirname }/src-backend/db/seeds`
+      directory: `${__dirname}/src-backend/db/seeds`
     }
   },
 
@@ -21,7 +21,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'my_db',
-      user:     'username',
+      user: 'username',
       password: 'password'
     },
     pool: {
@@ -29,7 +29,11 @@ module.exports = {
       max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
+      directory: `${__dirname}/src-backend/db/migrations`
+    },
+    seeds: {
+      directory: `${__dirname}/src-backend/db/seeds`
     }
   },
 
@@ -37,7 +41,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'my_db',
-      user:     'username',
+      user: 'username',
       password: 'password'
     },
     pool: {
@@ -45,8 +49,12 @@ module.exports = {
       max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
+      directory: `${__dirname}/src-backend/db/migrations`
+    },
+    seeds: {
+      directory: `${__dirname}/src-backend/db/seeds`
     }
   }
 
-};
+}

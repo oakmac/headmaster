@@ -101,6 +101,7 @@ module.exports = knex => {
       .where({
         userId,
       })
+      .orderBy('createdAt', 'desc')
       .select()
   }
 

@@ -20,7 +20,7 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/dashboard', ensureLoggedIn('/login'))
+app.use('/dashboard', ensureLoggedIn('/login/github'))
 app.use('/dashboard', express.static(PUBLIC_PATH))
 
 // should send error, move to middlewares later

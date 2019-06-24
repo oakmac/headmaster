@@ -68,10 +68,11 @@ module.exports = knex => {
     })
   }
 
-  function getDashboardForClass(classSlug) {
+  function getDashboardForClass(filter) {
 
     return knex.transaction(function(transaction) {
-      return selectBySlug(classSlug)
+      return knex.from(tableName)
+        .where(filter)
         .transacting(transaction)
         .select()
         .then(function(classes) {

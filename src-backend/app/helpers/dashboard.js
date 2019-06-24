@@ -3,6 +3,10 @@ const {
   distanceInWords,
   format,
 } = require('date-fns')
+const {
+  filterForEventsByType,
+} = require('./github')
+
 
 const getTimeAgo = (time) => (
   distanceInWords( new Date(), time, { addSuffix: true })
@@ -26,13 +30,19 @@ const getMostRecentTouchpointProp = (prop) => (R.pipe(
   R.find(R.hasPath(['body', prop])),
   R.path(['body', prop]),
 ))
-
+// TODO parsing is slow github json, consider changing to jsonb, or filtering and omitting properties before caching
 const transformStudent = R.pipe(
   R.omit([
     'id',
     'classId',
     'createdAt',
   ]),
+  R.evolve({
+    githubActivityResponse: R.pipe(
+      JSON.parse,
+      R.prop('data'),
+    ),
+  }),
   R.applySpec({
     name: R.prop('displayName'),
     shortName: R.pipe(
@@ -41,10 +51,29 @@ const transformStudent = R.pipe(
       R.head,
     ),
     github: R.prop('githubUsername'),
+    avatar: R.pipe(
+      R.prop('githubActivityResponse'),
+      R.head,
+      R.path(['actor', 'avatar_url']),
+    ),
+    lastGithubCommit: R.pipe(
+      R.prop('githubActivityResponse'),
+      R.head,
+      R.prop('created_at'),
+    ),
     stoplight: getMostRecentTouchpointProp('stoplight'),
     events: R.pipe(
       R.prop('events'),
       R.map(transformEvent),
+    ),
+    githubActivityResponse: R.pipe(
+      R.prop('githubActivityResponse'),
+      filterForEventsByType,
+      R.groupBy(R.pipe(
+        R.prop('created_at'),
+        // group by year, week of year, and day of week.
+        R.partialRight(format, ['YYYY-WW-d']),
+      )),
     ),
   }),
 )

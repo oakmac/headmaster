@@ -1,3 +1,4 @@
+const R = require('ramda')
 const { mapDashboardSQLToResponse } = require('../../helpers/dashboard')
 
 const { UserClass } = require('../../models')

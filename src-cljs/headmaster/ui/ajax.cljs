@@ -8,7 +8,7 @@
 (defn- class-url [class-id]
   (if (in-mock-mode?)
     (str "data/demo-class1.json")
-    (str "api/dashboard")))
+    (str "/api/dashboard")))
 
 (defn fetch-class [class-id success-fn error-fn]
   (GET (class-url class-id)
@@ -20,7 +20,7 @@
 (defn create-touchpoint [student-id touchpoint success-fn error-fn]
   (if (in-mock-mode?)
     (js/setTimeout success-fn (+ 250 (rand-int 500)))
-    (POST (str "api/students/" student-id "/touchpoints")
+    (POST (str "/api/students/" student-id "/touchpoints")
       {:error-handler error-fn
        :format :json
        :handler success-fn

@@ -25,27 +25,35 @@ const transformEvent = R.converge(
   ],
 )
 
-const transformGithubData = R.applySpec({
-  avatar: R.pipe(
-    R.prop('githubActivityResponse'),
-    R.head,
-    R.path(['actor', 'avatar_url']),
-  ),
-  lastGithubCommit: R.pipe(
-    R.prop('githubActivityResponse'),
-    R.head,
-    R.prop('created_at'),
-  ),
-  githubActivityResponse: R.pipe(
-    R.prop('githubActivityResponse'),
-    filterForEventsByType,
-    R.groupBy(R.pipe(
+const transformGithubData = R.pipe(
+  R.evolve({
+    githubActivityResponse: R.pipe(
+      JSON.parse,
+      R.prop('data'),
+    ),
+  }),
+  R.applySpec({
+    avatar: R.pipe(
+      R.prop('githubActivityResponse'),
+      R.head,
+      R.path(['actor', 'avatar_url']),
+    ),
+    lastGithubCommit: R.pipe(
+      R.prop('githubActivityResponse'),
+      R.head,
       R.prop('created_at'),
-      // group by year, week of year, and day of week.
-      R.partialRight(format, ['YYYY-WW-d']),
-    )),
-  ),
-})
+    ),
+    githubActivityResponse: R.pipe(
+      R.prop('githubActivityResponse'),
+      filterForEventsByType,
+      R.groupBy(R.pipe(
+        R.prop('created_at'),
+        // group by year, week of year, and day of week.
+        R.partialRight(format, ['YYYY-WW-d']),
+      )),
+    ),
+  })
+)
 
 const getMostRecentTouchpointProp = (prop) => (R.pipe(
   R.prop('events'),
@@ -59,22 +67,8 @@ const transformStudent = R.pipe(
     'classId',
     'createdAt',
   ]),
-  R.evolve({
-    githubActivityResponse: R.pipe(
-      JSON.parse,
-      R.prop('data'),
-    ),
-  }),
   R.converge(
     R.merge, [
-      R.ifElse(
-        R.pipe(
-          R.prop('githubActivityResponse'),
-          R.isNil,
-        ),
-        R.always({}),
-        transformGithubData,
-      ),
       R.applySpec({
         name: R.prop('displayName'),
         shortName: R.pipe(
@@ -89,6 +83,14 @@ const transformStudent = R.pipe(
           R.map(transformEvent),
         ),
       }),
+      R.ifElse(
+        R.pipe(
+          R.prop('githubActivityResponse'),
+          R.isNil,
+        ),
+        R.always({}),
+        transformGithubData,
+      ),
     ]
   )
 )

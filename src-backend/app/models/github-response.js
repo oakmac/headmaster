@@ -45,6 +45,7 @@ module.exports = knex => {
           .where('latest.createdAt', '<', subDays(new Date(), daysSince))
           .orWhereNull('latest.createdAt')
       })
+      .whereNotNull('Students.githubUsername')
       .select({
         studentId: 'Students.id',
         githubUsername: 'Students.githubUsername',

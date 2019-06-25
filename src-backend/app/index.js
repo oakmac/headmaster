@@ -65,7 +65,8 @@ app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))
 // TODO: move these elsewhere?
 
 function homepage (req, res) {
-  res.send(mustache.render(homepageTemplate, {}))
+  const userLoggedIn = isFn(req.isAuthenticated) && req.isAuthenticated()
+  res.send(mustache.render(homepageTemplate, {userLoggedIn: userLoggedIn}))
 }
 
 function dashboard (req, res) {
@@ -88,4 +89,8 @@ function apiAuthentication (req, res, nextFn) {
 
 function slurpFile (filename) {
   return fs.readFileSync(filename, {encoding: 'utf8'})
+}
+
+function isFn (f) {
+  return typeof f === 'function'
 }

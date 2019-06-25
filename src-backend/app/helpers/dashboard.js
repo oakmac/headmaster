@@ -25,6 +25,28 @@ const transformEvent = R.converge(
   ],
 )
 
+const transformGithubData = R.applySpec({
+  avatar: R.pipe(
+    R.prop('githubActivityResponse'),
+    R.head,
+    R.path(['actor', 'avatar_url']),
+  ),
+  lastGithubCommit: R.pipe(
+    R.prop('githubActivityResponse'),
+    R.head,
+    R.prop('created_at'),
+  ),
+  githubActivityResponse: R.pipe(
+    R.prop('githubActivityResponse'),
+    filterForEventsByType,
+    R.groupBy(R.pipe(
+      R.prop('created_at'),
+      // group by year, week of year, and day of week.
+      R.partialRight(format, ['YYYY-WW-d']),
+    )),
+  ),
+})
+
 const getMostRecentTouchpointProp = (prop) => (R.pipe(
   R.prop('events'),
   R.find(R.hasPath(['body', prop])),
@@ -43,39 +65,32 @@ const transformStudent = R.pipe(
       R.prop('data'),
     ),
   }),
-  R.applySpec({
-    name: R.prop('displayName'),
-    shortName: R.pipe(
-      R.prop('displayName'),
-      R.split(' '),
-      R.head,
-    ),
-    github: R.prop('githubUsername'),
-    // avatar: R.pipe(
-    //   R.prop('githubActivityResponse'),
-    //   R.head,
-    //   R.path(['actor', 'avatar_url']),
-    // ),
-    // lastGithubCommit: R.pipe(
-    //   R.prop('githubActivityResponse'),
-    //   R.head,
-    //   R.prop('created_at'),
-    // ),
-    stoplight: getMostRecentTouchpointProp('stoplight'),
-    events: R.pipe(
-      R.prop('events'),
-      R.map(transformEvent),
-    ),
-    // githubActivityResponse: R.pipe(
-    //   R.prop('githubActivityResponse'),
-    //   filterForEventsByType,
-    //   R.groupBy(R.pipe(
-    //     R.prop('created_at'),
-    //     // group by year, week of year, and day of week.
-    //     R.partialRight(format, ['YYYY-WW-d']),
-    //   )),
-    // ),
-  }),
+  R.converge(
+    R.merge, [
+      R.ifElse(
+        R.pipe(
+          R.prop('githubActivityResponse'),
+          R.isNil,
+        ),
+        R.always({}),
+        transformGithubData,
+      ),
+      R.applySpec({
+        name: R.prop('displayName'),
+        shortName: R.pipe(
+          R.prop('displayName'),
+          R.split(' '),
+          R.head,
+        ),
+        github: R.prop('githubUsername'),
+        stoplight: getMostRecentTouchpointProp('stoplight'),
+        events: R.pipe(
+          R.prop('events'),
+          R.map(transformEvent),
+        ),
+      }),
+    ]
+  )
 )
 
 function mapDashboardSQLToResponse(dashboard) {

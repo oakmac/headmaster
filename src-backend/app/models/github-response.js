@@ -25,25 +25,29 @@ module.exports = knex => {
   })
 
   function getLatestResponse() {
-    return knex.from(tableName)
+    return knex
+      .select([
+        knex.raw(`max("${tableName}"."createdAt") AS "latestResponse"`),
+        'studentId',
+      ])
+      .from(tableName)
+      .as('latest')
       .groupBy('studentId')
-      .orderBy('createdAt', 'desc')
       .whereNotNull('body')
-      .select(knex.raw(`max(${tableName}.createdAt) as createdAt, studentId, body`))
   } 
 
   // TODO make more flexible in time units since
   function getStaleStudents(classId, daysSince = 1) {
     return  knex.from('Students')
       .leftJoin(
-        getLatestResponse().as('latest'),
+        getLatestResponse(),
         'Students.id', `latest.studentId`
       )
       .where('Students.classId', classId)
       .andWhere(function(){
         this
-          .where('latest.createdAt', '<', subDays(new Date(), daysSince))
-          .orWhereNull('latest.createdAt')
+          .where('latest.latestResponse', '<', subDays(new Date(), daysSince))
+          .orWhereNull('latest.latestResponse')
       })
       .whereNotNull('Students.githubUsername')
       .select({

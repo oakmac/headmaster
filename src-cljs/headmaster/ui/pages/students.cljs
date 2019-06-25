@@ -294,7 +294,7 @@
     [:h5.thin-header "Last Touchpoint"]
     (when stoplight
       [:p.stoplight-status "Status: " [:strong (str/capitalize stoplight)]])
-    (when (string? comment)
+    (when (and comment (not (str/blank? comment)))
       [:blockquote.comment comment])
     (when-not (empty? tags)
       [:div.tags (map-indexed SmallTag tags)])

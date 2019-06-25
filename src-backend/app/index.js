@@ -14,16 +14,27 @@ loadEnvironmentVariables()
 const PORT = process.env.PORT || 3000
 const PUBLIC_PATH = path.resolve(__dirname, '../../public')
 
-const app = express()
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-
 const session = require('express-session')
 const KnexSessionStore = require('connect-session-knex')(session);
 const store = new KnexSessionStore({
   knex,
 })
+
+const viewsDir = path.resolve(__dirname, 'views')
+const homepageTemplate = slurpFile(path.join(viewsDir, 'homepage.mustache'))
+// FIXME: this is a hack
+const dashboardTemplate = slurpFile(path.join(__dirname, '../../public/development.html'))
+
+const loginRoutes = require('./routes/login')
+const apiRoutes = require('./routes/api')
+
+// -----------------------------------------------------------------------------
+// Express Application + Middleware
+
+const app = express()
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 
 app.use(session({
   secret: 'keyboard cat',
@@ -37,34 +48,39 @@ app.use(passport.session())
 
 app.use(express.static(PUBLIC_PATH))
 
-const viewsDir = path.resolve(__dirname, 'views')
-const homepageTemplate = slurpFile(path.join(viewsDir, 'homepage.mustache'))
+app.get('/', homepage)
+
+app.use('/dashboard', ensureLoggedIn('/login/github'))
+app.get('/dashboard', dashboard)
+
+// everything past /api requires an authenticated user
+app.use('/api', apiAuthentication)
+
+app.use('/', [loginRoutes, apiRoutes])
+
+app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))
+
+// -----------------------------------------------------------------------------
+// Page Endpoints
+// TODO: move these elsewhere?
 
 function homepage (req, res) {
   res.send(mustache.render(homepageTemplate, {}))
 }
 
-app.get('/', homepage)
+function dashboard (req, res) {
+  res.send(mustache.render(dashboardTemplate, {}))
+}
 
-app.use('/dashboard', ensureLoggedIn('/login/github'))
-app.use('/dashboard', express.static(PUBLIC_PATH))
-
-// should send error, move to middlewares later
-app.use('/api', function(req, res, next) {
+function apiAuthentication (req, res, nextFn) {
   if (!req.isAuthenticated || !req.isAuthenticated()) {
     res.status(401).json({
       error: 'user not authorized',
     })
+  } else {
+    nextFn()
   }
-  next()
-})
-
-app.use('/', [
-  require('./routes/login'),
-  require('./routes/api'),
-])
-
-app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))
+}
 
 // -----------------------------------------------------------------------------
 // Utils

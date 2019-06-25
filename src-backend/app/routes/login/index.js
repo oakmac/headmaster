@@ -1,4 +1,3 @@
-
 const passport = require('passport')
 const configurePassport = require('./configure-passport')
 const router = require('express').Router()
@@ -14,11 +13,6 @@ function handleMissingGitHubStrategy(req, res, next) {
 }
 
 configurePassport()
-
-router.route('/login')
-  .get(function(req, res){
-    res.send('Welcome to Headmaster.')
-  })
 
 router.route('/login/github')
   .get(handleMissingGitHubStrategy)

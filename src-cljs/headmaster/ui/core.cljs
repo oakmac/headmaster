@@ -56,9 +56,17 @@
     (fn []
       (timbre/error "Failed to fetch mock class data."))))
 
+(def one-second-ms 1000)
+(def ten-seconds-ms (* 10 one-second-ms))
+
+(defn polling-rate-ms []
+  (if (in-mock-mode?)
+    one-second-ms
+    ten-seconds-ms))
+
 (defn- start-polling-classroom-data []
   (fetch-mock-class-data)
-  (js/setInterval fetch-mock-class-data 1000))
+  (js/setInterval fetch-mock-class-data (polling-rate-ms)))
 
 ;; -----------------------------------------------------------------------------
 ;; Init / Render Loop

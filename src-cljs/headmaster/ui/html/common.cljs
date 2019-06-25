@@ -10,7 +10,7 @@
   [:svg
     {:class (str "feather-icon " svg-class)
      :dangerouslySetInnerHTML
-       {:__html (str "<use xlink:href='img/feather-icons-4.7.3.svg#" icon-id "' />")}}])
+       {:__html (str "<use xlink:href='/img/feather-icons-4.7.3.svg#" icon-id "' />")}}])
 
 (defn NavLink
   [{:keys [active? href label]}]
@@ -49,7 +49,7 @@
   [username]
   [:a {:href (util/github-url username) :target "_blank"}
     [:span.icon.is-small.github-icon
-      [:img {:src "img/github.svg"}]]
+      [:img {:src "/img/github.svg"}]]
     username])
 
 (defn Stoplight

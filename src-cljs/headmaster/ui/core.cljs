@@ -50,11 +50,7 @@
   (reagent/force-update-all))
 
 (defn- fetch-mock-class-data []
-  (ajax/fetch-class "class1"
-    (fn [class-data]
-      (rf/dispatch [:update-class class-data]))
-    (fn []
-      (timbre/error "Failed to fetch mock class data."))))
+  (rf/dispatch [:fetch-class-data]))
 
 (def one-second-ms 1000)
 (def ten-seconds-ms (* 10 one-second-ms))

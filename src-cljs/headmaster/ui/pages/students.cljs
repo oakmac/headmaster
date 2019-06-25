@@ -279,7 +279,9 @@
         [:span {:style {:display "inline-block"
                         :margin-left "6px"}}
           [common/Stoplight stoplight]]]
-      [:p.subtitle.is-6 [common/GitHubLink github]]]])
+      (when (and github
+                 (not (str/blank? github)))
+        [:p.subtitle.is-6 [common/GitHubLink github]])]])
 
 (defn SmallTag [idx {:keys [label status]}]
   [:span.tag

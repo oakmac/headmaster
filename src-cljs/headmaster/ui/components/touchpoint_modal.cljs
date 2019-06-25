@@ -19,8 +19,8 @@
       student-id
       new-touchpoint
       (fn []
-        ;; TODO: re-fetch latest class status here?
-        (rf/dispatch [:touchpoint-modal/close]))
+        (rf/dispatch [:touchpoint-modal/close])
+        (rf/dispatch [:fetch-class-data]))
       (fn []
         (timbre/error "Failed to save new touchpoint!")))))
 

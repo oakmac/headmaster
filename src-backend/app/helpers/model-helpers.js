@@ -1,6 +1,7 @@
 const R = require('ramda')
 
 function compareIncomingAndExistingItems(incoming, existing) {
+  const existingItems = R.map(R.pick(['id']))(existing)
   const [
     itemsToRelate,
     itemsToInsert,
@@ -9,10 +10,10 @@ function compareIncomingAndExistingItems(incoming, existing) {
     R.difference(incoming),
     // filter items on with and without ids
     R.partition(R.has('id')),
-  )(existing)
+  )(existingItems)
 
   // items that are in the existing but missing from incoming should be un-related.
-  const itemsToUnlink = R.difference(R.map(R.pick('id'))(existing), R.map(R.pick('id'))(incoming))
+  const itemsToUnlink = R.difference(existingItems, R.map(R.pick(['id']))(incoming))
 
   return {
     itemsToRelate,

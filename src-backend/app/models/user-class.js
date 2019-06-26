@@ -56,7 +56,13 @@ module.exports = knex => {
         })
         .transacting(transaction)
         .select()
-        .then(function( existingClasses ) {
+        .then(function( existingUserClasses ) {
+          const existingClasses = R.map(
+            R.pipe(
+              R.prop('classId'),
+              R.objOf('id')
+            )
+          )(existingUserClasses)
           const {
             itemsToRelate: classesToRelate,
             itemsToUnlink: classesToUnlink,
@@ -69,16 +75,13 @@ module.exports = knex => {
             .then(function() {
 
               const classesToRelateToUser = R.difference(
-                R.map(R.pick('id'))(classesToRelate),
-                R.pipe(
-                  R.filter(R.propEq('userId', userId)),
-                  R.map(R.pick('id'))
-                )(existingClasses)
+                R.map(R.pick(['id']))(classesToRelate),
+                existingClasses
               )
 
               return Promise.all(R.map(function (classToUpdate) {
                 return guts
-                  .classToRelate({
+                  ._create({
                     classId: classToUpdate.id,
                     userId,
                     role: 'headmaster',

@@ -39,7 +39,7 @@ module.exports = ({
       return results[0]
     })
 
-  const create = props => {
+  const _create = props => {
     delete props.id // not allowed to set `id`
 
     return knex.insert({
@@ -47,6 +47,11 @@ module.exports = ({
         id: `${name}-${uuid()}`
       })
       .into(tableName)
+  }
+
+  const create = props => {
+
+    return _create(props)
       .then(function () {
         return findOne(R.pick(selectableProps)(props))
       })
@@ -90,6 +95,7 @@ module.exports = ({
     tableName,
     selectableProps,
     timeout,
+    _create,
     create,
     bulkCreate,
     findAll,

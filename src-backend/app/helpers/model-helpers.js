@@ -2,7 +2,7 @@ const R = require('ramda')
 
 function compareIncomingAndExistingItems(incoming, existing) {
   const [
-    itemsToUpdate,
+    itemsToRelate,
     itemsToInsert,
   ] = R.pipe(
     // what items are in the incoming array but missing from the current items?
@@ -12,10 +12,10 @@ function compareIncomingAndExistingItems(incoming, existing) {
   )(existing)
 
   // items that are in the existing but missing from incoming should be un-related.
-  const itemsToUnlink = R.difference(existing, incoming)
+  const itemsToUnlink = R.difference(R.map(R.pick('id'))(existing), R.map(R.pick('id'))(incoming))
 
   return {
-    itemsToUpdate,
+    itemsToRelate,
     itemsToInsert,
     itemsToUnlink,
   }

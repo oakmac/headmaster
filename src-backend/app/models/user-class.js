@@ -58,7 +58,7 @@ module.exports = knex => {
         .select()
         .then(function( existingClasses ) {
           const {
-            itemsToUpdate: classesToUpdate,
+            itemsToRelate: classesToRelate,
             itemsToUnlink: classesToUnlink,
             itemsToInsert: classesToInsert,
           } = compareIncomingAndExistingItems(classes, existingClasses)
@@ -67,13 +67,29 @@ module.exports = knex => {
             .del()
             .transacting(transaction)
             .then(function() {
+
+              const classesToRelateToUser = R.difference(
+                R.map(R.pick('id'))(classesToRelate),
+                R.pipe(
+                  R.filter(R.propEq('userId', userId)),
+                  R.map(R.pick('id'))
+                )(existingClasses)
+              )
+
               return Promise.all(R.map(function (classToUpdate) {
                 return guts
-                  .update(classToUpdate.id, classToUpdate)
+                  .classToRelate({
+                    classId: classToUpdate.id,
+                    userId,
+                    role: 'headmaster',
+                  })
                   .transacting(transaction)
-              })(classesToUpdate))
+              })(classesToRelateToUser))
             })
             .then(function() {
+              if (R.isEmpty(classesToInsert)) {
+                return classesToInsert
+              }
               return Class.bulkCreate(classesToInsert)
                 .transacting(transaction)
                 .then(function() {
@@ -85,7 +101,7 @@ module.exports = knex => {
                 .then(function (classes) {
                   const arrayOfRelations = R.map((classToRelate) => ({
                     classId: classToRelate.id,
-                    userId, userId,
+                    userId,
                     role: 'headmaster',
                   }))(classes)
                   return guts.bulkCreate(arrayOfRelations)

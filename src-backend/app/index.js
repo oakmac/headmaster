@@ -8,7 +8,7 @@ const { ensureLoggedIn } = require('connect-ensure-login')
 
 const { loadEnvironmentVariables } = require('../utils/handle-config')
 
-const { isFn, slurpFile } = require('./util')
+const { isFn, loadTemplate } = require('./util')
 
 loadEnvironmentVariables()
 
@@ -21,10 +21,7 @@ const store = new KnexSessionStore({
   knex,
 })
 
-const viewsDir = path.resolve(__dirname, 'views')
-const homepageTemplate = slurpFile(path.join(viewsDir, 'homepage.mustache'))
-// FIXME: this is a hack
-const dashboardTemplate = slurpFile(path.join(__dirname, '../../public/development.html'))
+const homepageTemplate = loadTemplate('homepage')
 
 const loginRoutes = require('./routes/login')
 const apiRoutes = require('./routes/api')
@@ -52,9 +49,6 @@ app.use(express.static(PUBLIC_PATH))
 
 app.get('/', homepage)
 
-app.use('/dashboard', ensureLoggedIn('/login/github'))
-app.get('/dashboard', dashboard)
-
 // everything past /api requires an authenticated user
 app.use('/api', apiAuthentication)
 
@@ -69,10 +63,6 @@ app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))
 function homepage (req, res) {
   const userLoggedIn = isFn(req.isAuthenticated) && req.isAuthenticated()
   res.send(mustache.render(homepageTemplate, {userLoggedIn: userLoggedIn}))
-}
-
-function dashboard (req, res) {
-  res.send(mustache.render(dashboardTemplate, {}))
 }
 
 function apiAuthentication (req, res, nextFn) {

@@ -1,14 +1,14 @@
 const path = require('path')
 const mustache = require('mustache')
 
-const { isFn, slurpFile } = require('../../util')
+const { isFn, loadTemplate } = require('../../util')
 
-const { acceptClassroomInvitation } = require('../../controllers/classroom')
+const { acceptClassroomInvitation, validClassroomParam, validClassroomPermission } = require('../../controllers/classroom')
 
 const router = require('express').Router()
 
-const viewsDir = path.resolve(__dirname, '../../views')
-const invitationPageTempate = slurpFile(path.join(viewsDir, 'classroom.invitation.mustache'))
+const classroomTemplate = loadTemplate('classroom')
+const invitationPageTempate = loadTemplate('classroom.invitation')
 
 function invitationPage (req, res, nextFn) {
   const userLoggedIn = isFn(req.isAuthenticated) && req.isAuthenticated()
@@ -28,11 +28,17 @@ function acceptPage (req, res, nextFn) {
   nextFn()
 }
 
-router.route('/classroom/:classId/invitation')
-  .get(invitationPage)
+function classroomPage (req, res, nextFn) {
+  res.send(mustache.render(classroomTemplate, {}))
+}
+
+router.route('/classroom/:classId').get([validClassroomParam, validClassroomPermission, classroomPage])
+
+router.route('/classroom/:classId/invitation').get([validClassroomParam, invitationPage])
 
 router.route('/classroom/:classId/invitation/accept')
   .get([
+    validClassroomParam,
     acceptClassroomInvitation,
     acceptPage,
   ])

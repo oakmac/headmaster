@@ -27,7 +27,7 @@ module.exports = knex => {
   const Student = initStudentModel(knex)
   const Touchpoint = initTouchpointModel(knex)
 
-  function selectBySlug(classSlug) {
+  function getBySlug(classSlug) {
     return knex
       .from(tableName)
       .where({
@@ -37,7 +37,7 @@ module.exports = knex => {
 
   function createAndAssignStudentsToClass(classSlug, arrayOfStudents) {
     return knex.transaction(function(transaction) {
-      return selectBySlug(classSlug)
+      return getBySlug(classSlug)
         .transacting(transaction)
         .select('id')
         .then(function( classes ) {
@@ -54,7 +54,7 @@ module.exports = knex => {
 
   function getStudentsForClass(classSlug) {
     return knex.transaction(function(transaction) {
-      return selectBySlug(classSlug)
+      return getBySlug(classSlug)
         .transacting(transaction)
         .select('id')
         .then(function( classes ) {
@@ -110,7 +110,8 @@ module.exports = knex => {
   return {
     ...guts,
     createAndAssignStudentsToClass,
-    getStudentsForClass,
+    getBySlug,
     getDashboardForClass,
+    getStudentsForClass,
   }
 }

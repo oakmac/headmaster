@@ -1,8 +1,7 @@
 const path = require('path')
-const R = require('ramda')
 const mustache = require('mustache')
 
-const { slurpFile } = require('../../helpers/view-helpers')
+const { isFn, slurpFile } = require('../../util')
 
 const { acceptClassroomInvitation } = require('../../controllers/classroom')
 
@@ -11,9 +10,8 @@ const router = require('express').Router()
 const viewsDir = path.resolve(__dirname, '../../views')
 const invitationPageTempate = slurpFile(path.join(viewsDir, 'classroom.invitation.mustache'))
 
-
 function invitationPage (req, res, nextFn) {
-  const userLoggedIn = R.is(Function, req.isAuthenticated) && req.isAuthenticated()
+  const userLoggedIn = isFn(req.isAuthenticated) && req.isAuthenticated()
   const classId = req.params.classId
 
   res.send(mustache.render(invitationPageTempate, {
@@ -24,6 +22,7 @@ function invitationPage (req, res, nextFn) {
   nextFn()
 }
 
+// TODO: does it make sense to call a redirect and then nextFn() directly after?
 function acceptPage (req, res, nextFn) {
   res.redirect('/dashboard')
   nextFn()

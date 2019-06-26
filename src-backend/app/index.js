@@ -8,7 +8,7 @@ const { ensureLoggedIn } = require('connect-ensure-login')
 
 const { loadEnvironmentVariables } = require('../utils/handle-config')
 
-const { slurpFile } = require('./helpers/view-helpers')
+const { isFn, slurpFile } = require('./util')
 
 loadEnvironmentVariables()
 
@@ -83,12 +83,4 @@ function apiAuthentication (req, res, nextFn) {
   } else {
     nextFn()
   }
-}
-
-// -----------------------------------------------------------------------------
-// Utils
-// TODO: move this to it's own namespace / module
-
-function isFn (f) {
-  return typeof f === 'function'
 }

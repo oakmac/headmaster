@@ -3,12 +3,13 @@ const mustache = require('mustache')
 
 const { isFn, loadTemplate } = require('../util')
 
+const { permissionRequired } = require('../controllers/errors')
 const { acceptClassroomInvitation, validClassroomParam, validClassroomPermission } = require('../controllers/cohort')
 
 const router = require('express').Router()
 
-const classroomTemplate = loadTemplate('classroom')
-const invitationPageTempate = loadTemplate('classroom.invitation')
+const cohortTemplate = loadTemplate('cohort')
+const invitationPageTempate = loadTemplate('cohort.invitation')
 
 function invitationPage (req, res, nextFn) {
   const userLoggedIn = isFn(req.isAuthenticated) && req.isAuthenticated()
@@ -28,11 +29,17 @@ function acceptPage (req, res, nextFn) {
   nextFn()
 }
 
-function classroomPage (req, res, nextFn) {
-  res.send(mustache.render(classroomTemplate, {}))
+function cohortPage (req, res, _nextFn) {
+  res.send(mustache.render(cohortTemplate, {}))
 }
 
-router.route('/cohort/:classId').get([validClassroomParam, validClassroomPermission, classroomPage])
+function newCohortPage (req, res, _nextFn) {
+  res.send('<h1>TODO: write new cohort page :)</h1>')
+}
+
+router.route('/new-cohort').get([permissionRequired, newCohortPage])
+
+router.route('/cohort/:classId').get([validClassroomParam, validClassroomPermission, cohortPage])
 
 router.route('/cohort/:classId/invitation').get([validClassroomParam, invitationPage])
 

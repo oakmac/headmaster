@@ -58,16 +58,9 @@ const transformGithubData = R.pipe(
 const getMostRecentTouchpointProp = (prop) => R.pipe(
   R.prop('events'),
   R.find(R.pipe(
-    R.converge(
-      R.and, [
-        R.hasPath(['body', prop]),
-        R.pipe(
-          R.path(['body', prop]),
-          R.isNil,
-          R.not,
-        ),
-      ]
-    )
+    R.path(['body', prop]),
+    R.isNil,
+    R.not,
   )),
   R.path(['body', prop]),
 )

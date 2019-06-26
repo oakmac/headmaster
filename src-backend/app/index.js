@@ -1,5 +1,4 @@
 const path = require('path')
-const fs = require('fs-plus')
 const mustache = require('mustache')
 const knex = require('../config/database')
 
@@ -8,6 +7,8 @@ const passport = require('passport')
 const { ensureLoggedIn } = require('connect-ensure-login')
 
 const { loadEnvironmentVariables } = require('../utils/handle-config')
+
+const { slurpFile } = require('./helpers/view-helpers')
 
 loadEnvironmentVariables()
 
@@ -27,6 +28,7 @@ const dashboardTemplate = slurpFile(path.join(__dirname, '../../public/developme
 
 const loginRoutes = require('./routes/login')
 const apiRoutes = require('./routes/api')
+const classroomRoute = require('./routes/classroom')
 
 // -----------------------------------------------------------------------------
 // Express Application + Middleware
@@ -56,7 +58,7 @@ app.get('/dashboard', dashboard)
 // everything past /api requires an authenticated user
 app.use('/api', apiAuthentication)
 
-app.use('/', [loginRoutes, apiRoutes])
+app.use('/', [loginRoutes, apiRoutes, classroomRoute])
 
 app.listen(PORT, () => console.log(`Headmaster listening on port ${PORT}!`))
 
@@ -86,10 +88,6 @@ function apiAuthentication (req, res, nextFn) {
 // -----------------------------------------------------------------------------
 // Utils
 // TODO: move this to it's own namespace / module
-
-function slurpFile (filename) {
-  return fs.readFileSync(filename, {encoding: 'utf8'})
-}
 
 function isFn (f) {
   return typeof f === 'function'

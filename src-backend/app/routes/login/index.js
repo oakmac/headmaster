@@ -27,18 +27,19 @@ router.route('/login/github/callback')
     passport.authenticate(
       'github',
       {
+        // TODO: we should send them to a "failed to login" page here
         failureRedirect: '/login',
       }
     ),
     function(req, res) {
-      res.redirect('/dashboard')
+      res.redirect('/')
     }
   )
 
 router.route('/logout')
   .get(function(req, res){
     req.logout()
-    res.redirect('/login')
+    res.redirect('/')
   })
 
 module.exports = router

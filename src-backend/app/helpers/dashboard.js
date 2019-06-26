@@ -55,11 +55,23 @@ const transformGithubData = R.pipe(
   })
 )
 
-const getMostRecentTouchpointProp = (prop) => (R.pipe(
+const getMostRecentTouchpointProp = (prop) => R.pipe(
   R.prop('events'),
-  R.find(R.hasPath(['body', prop])),
+  R.find(R.pipe(
+    R.converge(
+      R.and, [
+        R.hasPath(['body', prop]),
+        R.pipe(
+          R.path(['body', prop]),
+          R.isNil,
+          R.not,
+        ),
+      ]
+    )
+  )),
   R.path(['body', prop]),
-))
+)
+
 // TODO parsing is slow github json, consider changing to jsonb, or filtering and omitting properties before caching
 const transformStudent = R.pipe(
   R.omit([

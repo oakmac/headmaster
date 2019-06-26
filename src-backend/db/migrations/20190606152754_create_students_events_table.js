@@ -19,7 +19,7 @@ function setupStudentsEventsSchema(knex, table) {
     .references('Users.id')
 
   table
-    .string('body')
+    .text('body', 'longtext')
 
   table
     .timestamp('createdAt')

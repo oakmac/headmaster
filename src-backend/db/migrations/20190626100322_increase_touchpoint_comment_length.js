@@ -4,16 +4,16 @@
 
 exports.up = function(knex) {
   if (knex.client.config.client !== 'sqlite3') {
-    return knex.schema.alterTable('StudentsGithubResponses', function(t) {
+    return knex.schema.alterTable('StudentsEvents', function(t) {
       t.text('body', 'longtext').alter();
     })
   } else {
     // no-op, but migrations require returning a promise
-    return knex.schema.hasTable('StudentsGithubResponses')
+    return knex.schema.hasTable('StudentsEvents')
   }
 };
 
 exports.down = function(knex) {
   // no-op, but migrations require returning a promise
-  return knex.schema.hasTable('StudentsGithubResponses')
+  return knex.schema.hasTable('StudentsEvents')
 };

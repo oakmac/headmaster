@@ -13,7 +13,7 @@ function setupStudentsGithubResponsesSchema(knex, table) {
     .references('Students.id')
 
   table
-    .string('body')
+    .text('body', 'longtext')
 
   table
     .timestamp('createdAt')

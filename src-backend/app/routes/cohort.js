@@ -1,9 +1,9 @@
 const path = require('path')
 const mustache = require('mustache')
 
-const { isFn, loadTemplate } = require('../../util')
+const { isFn, loadTemplate } = require('../util')
 
-const { acceptClassroomInvitation, validClassroomParam, validClassroomPermission } = require('../../controllers/classroom')
+const { acceptClassroomInvitation, validClassroomParam, validClassroomPermission } = require('../controllers/cohort')
 
 const router = require('express').Router()
 
@@ -24,7 +24,7 @@ function invitationPage (req, res, nextFn) {
 
 // TODO: does it make sense to call a redirect and then nextFn() directly after?
 function acceptPage (req, res, nextFn) {
-  res.redirect('/dashboard')
+  res.redirect('/')
   nextFn()
 }
 
@@ -32,11 +32,11 @@ function classroomPage (req, res, nextFn) {
   res.send(mustache.render(classroomTemplate, {}))
 }
 
-router.route('/classroom/:classId').get([validClassroomParam, validClassroomPermission, classroomPage])
+router.route('/cohort/:classId').get([validClassroomParam, validClassroomPermission, classroomPage])
 
-router.route('/classroom/:classId/invitation').get([validClassroomParam, invitationPage])
+router.route('/cohort/:classId/invitation').get([validClassroomParam, invitationPage])
 
-router.route('/classroom/:classId/invitation/accept')
+router.route('/cohort/:classId/invitation/accept')
   .get([
     validClassroomParam,
     acceptClassroomInvitation,

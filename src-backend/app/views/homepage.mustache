@@ -16,19 +16,33 @@
     <div class="container">
       <h1 class="title">Headmaster</h1>
       <h2 class="subtitle">Student Tracking Tool</h2>
-      {{#userLoggedIn}}
-      <a class="button" href="/dashboard/#/students">
-        <span>Go To Class Dashboard</span>
-      </a>
-      {{/userLoggedIn}}
+
       {{^userLoggedIn}}
-      <a class="button" href="/login/github">
+      <a class="button is-medium" href="/login/github">
         <span class="icon">
           <i class="fab fa-github"></i>
         </span>
         <span>Login with GitHub</span>
       </a>
       {{/userLoggedIn}}
+
+      {{#userLoggedIn}}
+        <div class="buttons are-medium">
+          {{#cohorts}}
+            <a class="button" href="/cohort/{{slug}}">{{name}}</a>
+          {{/cohorts}}
+        </div>
+        <div class="buttons">
+          <a class="button is-info" href="/new-cohort">Start New Cohort</a>
+          <a class="button" href="/logout">
+            <span class="icon">
+              <i class="fas fa-sign-out-alt"></i>
+            </span>
+            <span>Logout</span>
+          </a>
+        </div>
+      {{/userLoggedIn}}
+
     </div>
   </div>
 </section>

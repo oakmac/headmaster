@@ -2,6 +2,7 @@
   "Students page"
   (:require
     [clojure.string :as str]
+    [headmaster.ui.config :refer [hide-student-status?]]
     [headmaster.ui.constants :refer [ellipsis]]
     [headmaster.ui.html.common :as common]
     [headmaster.ui.util :as util]
@@ -288,7 +289,8 @@
         name
         [:span {:style {:display "inline-block"
                         :margin-left "6px"}}
-          [common/Stoplight stoplight]]]
+          (when-not (hide-student-status?)
+            [common/Stoplight stoplight])]]
       (when (and github
                  (not (str/blank? github)))
         [:p.subtitle.is-6 [common/GitHubLink github]])]])
@@ -304,7 +306,8 @@
 (defn LastTouchpoint [{:keys [isOldEvent timeAgo recordedBy stoplight comment tags]}]
   [:div
     [:h5.thin-header "Last Touchpoint"]
-    (when stoplight
+    (when (and stoplight
+               (not (hide-student-status?)))
       [:p.stoplight-status "Status: " [:strong (str/capitalize stoplight)]])
     (when (and comment (not (str/blank? comment)))
       [:blockquote.comment comment])

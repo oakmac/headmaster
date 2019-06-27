@@ -214,56 +214,66 @@
       (= x 2) (rand-int 15)
       :else (rand-int 25))))
 
+(defn- activity-count [activity-list day]
+  (count
+    (filter
+      (fn [itm]
+        (and (= "PushEvent" (:type itm))
+             (string? (:created_at itm))
+             (str/starts-with? (:created_at itm) day)))
+      activity-list)))
+
 ;; TODO: use <svg> instead here?
-(defn CommitGraph []
-  [:div
-    [:h5.thin-header "Latest Commits"]
-    [:div.commit-graph
-      [:div.row.days-row
-        [:div.week-count]
-        [:div.cell]
-        [:div.cell]
-        [:div.cell.day-abbreviation "Tu"]
-        [:div.cell]
-        [:div.cell.day-abbreviation "Th"]
-        [:div.cell]
-        [:div.cell.day-abbreviation "Sa"]]
-      [:div.row.week
-        [:div.week-count "#8"]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]]
-      [:div.row.week
-        [:div.week-count "#9"]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]]
-      [:div.row.week
-        [:div.week-count "#11"]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]]
-      [:div.row.week
-        [:div.week-count "#12"]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [CommitGraphDay {:commit-count (random-commit-count)}]
-        [:div.cell]
-        [:div.cell]]]])
+(defn CommitGraph [github-activity]
+  (let [activity-list (flatten (vals github-activity))]
+    [:div
+      [:h5.thin-header "Latest Commits"]
+      [:div.commit-graph
+        [:div.row.days-row
+          [:div.week-count]
+          [:div.cell]
+          [:div.cell]
+          [:div.cell.day-abbreviation "Tu"]
+          [:div.cell]
+          [:div.cell.day-abbreviation "Th"]
+          [:div.cell]
+          [:div.cell.day-abbreviation "Sa"]]
+        [:div.row.week
+          [:div.week-count "#1"]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-16")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-17")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-18")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-19")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-20")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-21")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-22")}]]
+        [:div.row.week
+          [:div.week-count "#2"]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-23")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-24")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-25")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-26")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-27")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-28")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-29")}]]
+        [:div.row.week
+          [:div.week-count "#3"]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-06-30")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-01")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-02")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-03")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-04")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-05")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-06")}]]
+        [:div.row.week
+          [:div.week-count "#4"]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-07")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-08")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-09")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-10")}]
+          [CommitGraphDay {:commit-count (activity-count activity-list "2019-07-11")}]
+          [:div.cell]
+          [:div.cell]]]]))
 
 (def placeholder-96px "https://bulma.io/images/placeholders/96x96.png")
 
@@ -312,13 +322,13 @@
   (util/prevent-default js-evt)
   (rf/dispatch [:touchpoint-modal/open student-id]))
 
-(defn StudentTile [{:keys [avatar id name github events stoplight] :as student}]
+(defn StudentTile [{:keys [avatar events id name github githubActivityResponse vents stoplight] :as student}]
   [:div.card.student-card
     [:div.card-content
       [TileTop student]
       [:div.columns
         [:div.column [LastTouchpoint (first events)]]
-        [:div.column.is-narrow [CommitGraph student]]]]
+        [:div.column.is-narrow [CommitGraph githubActivityResponse]]]]
     [:footer.card-footer
       [:a.card-footer-item
         {:href "#"

@@ -46,11 +46,6 @@ const transformGithubData = R.pipe(
     githubActivityResponse: R.pipe(
       R.prop('githubActivityResponse'),
       filterForEventsByType,
-      R.groupBy(R.pipe(
-        R.prop('created_at'),
-        // group by year, week of year, and day of week.
-        R.partialRight(format, ['YYYY-WW-d']),
-      )),
     ),
   })
 )

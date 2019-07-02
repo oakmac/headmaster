@@ -17,6 +17,12 @@
      :keywords? true
      :response-format :json}))
 
+(defn invite-student [class-id student-id success-fn error-fn]
+  (if (in-mock-mode?)
+    (js/setTimeout success-fn (+ 250 (rand-int 500)))
+    (POST (str "api/classroom" class-id "invitation")))
+  )
+
 (defn create-touchpoint [student-id touchpoint success-fn error-fn]
   (if (in-mock-mode?)
     (js/setTimeout success-fn (+ 250 (rand-int 500)))

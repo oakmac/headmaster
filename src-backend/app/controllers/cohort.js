@@ -1,35 +1,28 @@
 const R = require('ramda')
 const { Class, UserClass } = require('../models')
-const { isArray } = require('../util')
 const { notFoundPage } = require('./errors')
 
 function acceptClassroomInvitation (req, res, nextFn) {
   const userId = req.user.id
+  const cohortSlug = req.params.cohortSlug
 
-  return UserClass.setClassesForUser(userId, [{
-    id: req.params.classId
-  }])
+  return Class.getBySlug(cohortSlug)
+    .then(function(classroom) {
+      return UserClass.setClassesForUser(userId, [{
+        id: classroom.id,
+      }])
+    })
     .then(function () {
       nextFn()
     })
     .catch(nextFn)
 }
 
-// does the :classId route param exist?
 function validClassroomParam (req, res, nextFn) {
-  const classroomSlug = req.params.classId
+  const cohortSlug = req.params.cohortSlug
 
-  Class.getBySlug(classroomSlug)
+  return Class.getBySlug(cohortSlug)
     .then(function (classroom) {
-      // FIXME: classroom should not be an array here...
-      if (isArray(classroom)) {
-        if (classroom.length === 1) {
-          classroom = classroom[0]
-        } else {
-          classroom = null
-        }
-      }
-
       if (classroom) {
         nextFn()
       } else {
@@ -42,9 +35,9 @@ function validClassroomParam (req, res, nextFn) {
     })
 }
 
-// does this user have access to view :classId?
+// does this user have access to view :cohortSlug?
 function validClassroomPermission (req, res, nextFn) {
-  const requestSlug = req.params.classId
+  const requestSlug = req.params.cohortSlug
   const userId = req.user && req.user.id
 
   // user is not logged in
@@ -53,10 +46,10 @@ function validClassroomPermission (req, res, nextFn) {
     return
   }
 
-  UserClass.getClassesForUser(userId)
+  return UserClass.getClassesForUser(userId)
     .then(function (classes) {
-      const userClassroomSlugs = R.pluck('slug', classes)
-      if (R.includes(requestSlug, userClassroomSlugs)) {
+      const usercohortSlugs = R.pluck('slug', classes)
+      if (R.includes(requestSlug, usercohortSlugs)) {
         nextFn()
       } else {
         // NOTE: send 404 here instead of 401 for security reasons

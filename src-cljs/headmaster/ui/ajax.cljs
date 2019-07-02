@@ -20,7 +20,7 @@
 (defn invite-student [class-id success-fn error-fn]
   (if (in-mock-mode?)
     (js/setTimeout success-fn (+ 250 (rand-int 500)))
-    (POST (str "api/classroom" class-id "invitation")
+    (POST (str "api/classroom/" class-id "/invitation")
           {:error-handler error-fn
            :format :json
            :handler success-fn

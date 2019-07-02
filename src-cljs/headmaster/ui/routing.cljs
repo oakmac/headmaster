@@ -22,13 +22,17 @@
    "/schedule" "SCHEDULE_PAGE"
    "/attendance" "ATTENDANCE_PAGE"
    "/assignments" "ASSIGNMENTS_PAGE"
-   "/manage-students" "MANAGE_STUDENTS_PAGE"})
+   "/manage-students" "MANAGE_STUDENTS_PAGE"
+   "/invite" "INVITE_PAGE"})
+
 
 (defn- on-hash-change [_js-evt]
   (let [new-route (util/current-hash)
         new-page (get pages new-route)
         student-id (str/replace new-route "/students/" "")]
+
     (cond
+
       (student-page? new-route)
       (rf/dispatch [:student-page/init student-id])
 
@@ -43,6 +47,9 @@
 
       (= new-page "ASSIGNMENTS_PAGE")
       (rf/dispatch [:assignments-page/init])
+
+      (= new-page "INVITE_PAGE")
+      (rf/dispatch [:invite/init])
 
       :else
       (util/set-hash! default-route))))

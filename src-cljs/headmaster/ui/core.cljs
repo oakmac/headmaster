@@ -11,6 +11,7 @@
     [headmaster.ui.events]
     [headmaster.ui.pages.dashboard :refer [DashboardPage]]
     [headmaster.ui.pages.students :refer [StudentsPage]]
+    [headmaster.ui.pages.invite :refer [InvitePage]]
     [headmaster.ui.routing :as routing]
     [headmaster.ui.subs]
     [headmaster.ui.util :as util]
@@ -31,6 +32,7 @@
       (case page-id
         "DASHBOARD_PAGE" [DashboardPage]
         "STUDENTS_PAGE" [StudentsPage]
+        "INVITE_PAGE" [InvitePage]
         ; "STUDENT_PAGE" [StudentPage]
         ; "ATTENDANCE_PAGE" [AttendancePage]
         ; "ASSIGNMENTS_PAGE" [AssignmentsPage]

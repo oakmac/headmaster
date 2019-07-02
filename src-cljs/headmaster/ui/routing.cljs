@@ -39,6 +39,9 @@
       (= new-page "DASHBOARD_PAGE")
       (rf/dispatch [:dashboard/init])
 
+      (= new-page "INVITE_PAGE")
+      (rf/dispatch [:invite/init])
+
       (= new-page "STUDENTS_PAGE")
       (rf/dispatch [:students-page/init])
 
@@ -47,9 +50,6 @@
 
       (= new-page "ASSIGNMENTS_PAGE")
       (rf/dispatch [:assignments-page/init])
-
-      (= new-page "INVITE_PAGE")
-      (rf/dispatch [:invite/init])
 
       :else
       (util/set-hash! default-route))))

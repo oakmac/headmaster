@@ -6,7 +6,8 @@
     [headmaster.ui.util :as util]
     [oops.core :refer [ocall oget oset!]]
     [re-frame.core :as rf]
-    [taoensso.timbre :as timbre]))
+    [taoensso.timbre :as timbre]
+    [bide.core :as b]))
 
 (def default-route "/dashboard")
 

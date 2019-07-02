@@ -13,11 +13,11 @@ const invitationPageTempate = loadTemplate('cohort.invitation')
 
 function invitationPage (req, res, nextFn) {
   const userLoggedIn = isFn(req.isAuthenticated) && req.isAuthenticated()
-  const classId = req.params.classId
+  const cohortSlug = req.params.cohortSlug
 
   res.send(mustache.render(invitationPageTempate, {
     userLoggedIn,
-    classId,
+    cohortSlug,
   }))
 
   nextFn()
@@ -39,11 +39,11 @@ function newCohortPage (req, res, _nextFn) {
 
 router.route('/new-cohort').get([permissionRequired, newCohortPage])
 
-router.route('/cohort/:classId').get([validClassroomParam, validClassroomPermission, cohortPage])
+router.route('/cohort/:cohortSlug').get([validClassroomParam, validClassroomPermission, cohortPage])
 
-router.route('/cohort/:classId/invitation').get([validClassroomParam, invitationPage])
+router.route('/cohort/:cohortSlug/invitation').get([validClassroomParam, invitationPage])
 
-router.route('/cohort/:classId/invitation/accept')
+router.route('/cohort/:cohortSlug/invitation/accept')
   .get([
     validClassroomParam,
     acceptClassroomInvitation,

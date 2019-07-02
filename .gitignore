@@ -12,5 +12,5 @@ public/js/manifest.edn
 *.db
 config.json
 *.diff
-
+*.log
 deploy.sh

@@ -34,7 +34,10 @@
         [NavLink {:active? (or (= current-page-id "STUDENTS_PAGE")
                                (= current-page-id "STUDENT_PAGE"))
                   :href "#/students"
-                  :label "Students"}]]]))
+                  :label "Students"}]
+        [NavLink {:active? (= current-page-id "INVITE_PAGE")
+                 :href "#/invite"
+                 :label "Invite"}]]]))
         ; [NavLink {:active? (= current-page-id "SCHEDULE_PAGE")
         ;           :href "#/schedule"
         ;           :label "Schedule"}]

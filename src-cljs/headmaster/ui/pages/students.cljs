@@ -27,6 +27,14 @@
   (compare (util/safe-lower-case a)
            (util/safe-lower-case b)))
 
+(defn- compare-last-commit-time [a b]
+  (compare (util/safe-lower-case b)
+           (util/safe-lower-case a)))
+
+(defn- compare-last-touchpoint [a b]
+  (compare (get-in b [:events 0 :createdAt] nil)
+           (get-in a [:events 0 :createdAt] nil)))
+
 ;;------------------------------------------------------------------------------
 ;; Subscriptions
 
@@ -81,8 +89,13 @@
     (let [compare-fn (cond
                        (= sort-col :stoplight) compare-stoplight
                        (= sort-col :github) compare-github
+                       (= sort-col :lastGithubCommit) compare-last-commit-time
                        :else compare)
-          sorted-students (sort-by sort-col compare-fn students-vec)]
+
+          sorted-students (if (= sort-col :lastTouchpoint) ;; FIXME: this is a hack
+                            (sort compare-last-touchpoint students-vec)
+                            (sort-by sort-col compare-fn students-vec))]
+
       (if (= sort-dir :desc)
         (reverse sorted-students)
         sorted-students))))
@@ -163,6 +176,8 @@
                      :col-kwd :name}]
       [HeaderColumn {:label "GitHub"
                      :col-kwd :github}]
+      [HeaderColumn {:label "Last Touchpoint"
+                     :col-kwd :lastTouchpoint}]
       [HeaderColumn {:label "Last Commit"
                      :col-kwd :lastGithubCommit}]]])
 
@@ -172,11 +187,12 @@
              (ocall "fromNow"))])
 
 (defn TableRow
-  [idx {:keys [id github lastGithubCommit name stoplight]}]
+  [idx {:keys [id events github lastGithubCommit name stoplight]}]
   [:tr {:key idx}
     [:td {:style {:text-align "center"}} [common/Stoplight stoplight]]
     [:td [:a {:href (str "#/students/" id)} name]]
     [:td [common/GitHubLink github]]
+    [:td (:timeAgo (first events))]
     [:td (when lastGithubCommit
            (LastGitHubCommit lastGithubCommit))]])
 
@@ -306,8 +322,7 @@
 (defn LastTouchpoint [{:keys [isOldEvent timeAgo recordedBy stoplight comment tags]}]
   [:div
     [:h5.thin-header "Last Touchpoint"]
-    (when (and stoplight
-               (not (hide-student-status?)))
+    (when stoplight
       [:p.stoplight-status "Status: " [:strong (str/capitalize stoplight)]])
     (when (and comment (not (str/blank? comment)))
       [:blockquote.comment comment])
@@ -316,7 +331,7 @@
     ;; NOTE: this conditional will go away when we are not using mock data
     (when recordedBy
       [:p.recorded-by
-        (if isOldEvent
+        (if isOldEvent ;; <-- FIXME: need to add this information
           [:strong timeAgo]
           timeAgo)
         " by " recordedBy])])
@@ -330,7 +345,8 @@
     [:div.card-content
       [TileTop student]
       [:div.columns
-        [:div.column [LastTouchpoint (first events)]]
+        (when-not (hide-student-status?)
+          [:div.column [LastTouchpoint (first events)]])
         [:div.column.is-narrow [CommitGraph githubActivityResponse]]]]
     [:footer.card-footer
       [:a.card-footer-item

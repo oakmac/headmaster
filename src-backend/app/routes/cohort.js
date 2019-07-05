@@ -30,6 +30,7 @@ function acceptPage (req, res, nextFn) {
 }
 
 function cohortPage (req, res, _nextFn) {
+  // TODO: need to add cohortName to the template here
   res.send(mustache.render(cohortTemplate, {}))
 }
 

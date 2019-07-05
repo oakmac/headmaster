@@ -16,6 +16,7 @@ const transformEvent = R.converge(
   R.merge, [
     R.prop('body'),
     R.applySpec({
+      createdAt: R.prop('createdAt'),
       timeAgo: R.pipe(
         R.prop('createdAt'),
         getTimeAgo,

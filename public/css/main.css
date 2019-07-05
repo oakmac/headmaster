@@ -131,3 +131,21 @@
   width: 18px;
   text-align: right;
 }
+
+/* -----------------------------------------------------------------------------
+/* Sort Controls
+/* ---------------------------------------------------------------------------*/
+
+.sort-controls {
+  display: flex;
+  flex-direction: row;
+}
+
+.sort-controls .label {
+  margin-top: 0.3rem;
+  margin-right: 0.6rem;
+}
+
+.sort-controls .select.column-select {
+  margin-right: 0.6rem;
+}

@@ -1,6 +1,6 @@
 (ns headmaster.ui.pages.dashboard
   (:require
-    [headmaster.ui.html.common :refer [ClassHeader PrimaryNav]]
+    [headmaster.ui.components.common :as common]
     [headmaster.ui.util :refer [js-log log]]
     [re-frame.core :as rf]))
 
@@ -21,8 +21,8 @@
 (defn DashboardPage
   []
   [:section.section
-    [ClassHeader]
-    [PrimaryNav]
+    [common/ClassHeader]
+    [common/PrimaryNav]
     [:div.content
       [:h2 "Dashboard page:"]
       [:ul

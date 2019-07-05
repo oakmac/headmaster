@@ -2,9 +2,9 @@
   "Students page"
   (:require
     [clojure.string :as str]
+    [headmaster.ui.components.common :as common]
     [headmaster.ui.config :refer [hide-student-status?]]
     [headmaster.ui.constants :refer [ellipsis]]
-    [headmaster.ui.html.common :as common]
     [headmaster.ui.util :as util]
     [oops.core :refer [ocall oget]]
     [re-frame.core :as rf]
@@ -164,7 +164,7 @@
       [HeaderColumn {:label "GitHub"
                      :col-kwd :github}]
       [HeaderColumn {:label "Last Commit"
-                     :col-kwd :lastGitHubCommit}]]])
+                     :col-kwd :lastGithubCommit}]]])
 
 (defn LastGitHubCommit
   [last-timestamp]
@@ -172,13 +172,13 @@
              (ocall "fromNow"))])
 
 (defn TableRow
-  [idx {:keys [id github lastGitHubCommit name stoplight]}]
+  [idx {:keys [id github lastGithubCommit name stoplight]}]
   [:tr {:key idx}
     [:td {:style {:text-align "center"}} [common/Stoplight stoplight]]
     [:td [:a {:href (str "#/students/" id)} name]]
     [:td [common/GitHubLink github]]
-    [:td (when lastGitHubCommit
-           (LastGitHubCommit lastGitHubCommit))]])
+    [:td (when lastGithubCommit
+           (LastGitHubCommit lastGithubCommit))]])
 
 (defn StudentsTable
   []
@@ -360,13 +360,55 @@
     [:div
       (map-indexed TileRow student-chunks)]))
 
-;; TODO: make this a toggle component instead of buttons
+(defn- toggle-sort [js-evt]
+  (util/prevent-default js-evt)
+  (let [new-sort-col (keyword (oget js-evt "currentTarget.value"))]
+    (rf/dispatch [:students-page/set-sort-col new-sort-col])))
+
+(defn SortDirButtons []
+  (let [sort-dir @(rf/subscribe [:students-page/sort-dir])]
+    [:div.buttons.has-addons.direction-buttons
+      [:button.button
+        {:class (when (= sort-dir :asc) ["is-info" "is-selected"])
+         :on-click #(rf/dispatch [:students-page/set-sort-dir :asc])}
+        [:span.icon
+          [:i.fas.fa-chevron-down]]]
+      [:button.button
+        {:class (when (= sort-dir :desc) ["is-info" "is-selected"])
+         :on-click #(rf/dispatch [:students-page/set-sort-dir :desc])}
+        [:span.icon
+          [:i.fas.fa-chevron-up]]]]))
+
+(defn SortControls []
+  (let [sort-col @(rf/subscribe [:students-page/sort-col])]
+    [:div.sort-controls
+      [:div [:label.label "Sort:"]]
+      [:div
+        [:div.select.column-select
+          [:select {:on-change toggle-sort
+                    :value sort-col}
+            [:option {:value :name} "Name"]
+            [:option {:value :github} "Github Username"]
+            [:option {:value :stoplight} "Stoplight Status"]
+            [:option {:value :lastGithubCommit} "Last Commit"]
+            [:option {:value :lastTouchpoint} "Last Touchpoint"]]]]
+      [:div [SortDirButtons]]]))
+
 (defn ToggleViewButtons []
-  [:div.field.is-grouped
-    [:p.control
-      [:button.button {:on-click #(rf/dispatch [:students-page/set-view-type "TABLE_VIEW"])} "Table View"]]
-    [:p.control
-      [:button.button {:on-click #(rf/dispatch [:students-page/set-view-type "TILES_VIEW"])} "Tiles View"]]])
+  (let [table-or-tiles @(rf/subscribe [:students-page/view-type])]
+    [:div.buttons.has-addons
+      [:button.button
+        {:class (when (= table-or-tiles "TILES_VIEW") ["is-info" "is-selected"])
+         :on-click #(rf/dispatch [:students-page/set-view-type "TILES_VIEW"])}
+        [:span.icon
+          [:i.fas.fa-th]]
+        [:span "Tiles"]]
+      [:button.button
+        {:class (when (= table-or-tiles "TABLE_VIEW") ["is-info" "is-selected"])
+         :on-click #(rf/dispatch [:students-page/set-view-type "TABLE_VIEW"])}
+        [:span.icon
+          [:i.fas.fa-table]]
+        [:span "Table"]]]))
 
 (defn SearchBar []
   (let [search-txt @(rf/subscribe [:students-page/search-txt])]
@@ -378,8 +420,9 @@
 
 (defn FilterControls []
   [:div.columns
-    [:div.column.is-two-thirds [ToggleViewButtons]]
-    [:div.column.is-one-third [SearchBar]]])
+    [:div.column.is-3 [ToggleViewButtons]]
+    [:div.column.is-5 [SortControls]]
+    [:div.column.is-4 [SearchBar]]])
 
 (defn StudentsPage []
   (let [view-type @(rf/subscribe [:students-page/view-type])]

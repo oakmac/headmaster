@@ -1,4 +1,4 @@
-(ns headmaster.ui.html.common
+(ns headmaster.ui.components.common
   (:require
     [clojure.string :as str]
     [headmaster.ui.util :as util]
@@ -28,13 +28,16 @@
   (let [current-page-id @(rf/subscribe [:page-id])]
     [:nav.tabs.is-boxed
       [:ul
-        [NavLink {:active? (= current-page-id "DASHBOARD_PAGE")
-                  :href "#/dashboard"
-                  :label "Dashboard"}]
+        ; [NavLink {:active? (= current-page-id "DASHBOARD_PAGE")
+        ;           :href "#/dashboard"
+        ;           :label "Dashboard"}]
         [NavLink {:active? (or (= current-page-id "STUDENTS_PAGE")
                                (= current-page-id "STUDENT_PAGE"))
                   :href "#/students"
                   :label "Students"}]]]))
+        ; [NavLink {:active? (= current-page-id "MANAGE_COHORT_PAGE")
+        ;           :href "#/manage"
+        ;           :label "Manage Cohort"}]]]))
         ; [NavLink {:active? (= current-page-id "SCHEDULE_PAGE")
         ;           :href "#/schedule"
         ;           :label "Schedule"}]

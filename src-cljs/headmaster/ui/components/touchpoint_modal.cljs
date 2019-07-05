@@ -2,8 +2,8 @@
   (:require
     [clojure.string :as str]
     [headmaster.ui.ajax :as ajax]
+    [headmaster.ui.components.common :as common]
     [headmaster.ui.constants :refer [ellipsis]]
-    [headmaster.ui.html.common :as common]
     [headmaster.ui.util :as util]
     [oops.core :refer [ocall oget]]
     [re-frame.core :as rf]

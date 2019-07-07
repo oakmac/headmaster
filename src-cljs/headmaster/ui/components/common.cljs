@@ -17,36 +17,24 @@
   [:li {:class (when active? "is-active")}
     [:a {:href href} label]])
 
-(defn ClassHeader []
-  (let [class-title @(rf/subscribe [:class-title])
-        class-subtitle @(rf/subscribe [:class-subtitle])]
+(defn CohortHeader []
+  (let [title @(rf/subscribe [:cohort-title])
+        subtitle @(rf/subscribe [:cohort-subtitle])]
     [:div {:style {:margin-bottom "20px"}}
-      [:h1.title class-title]
-      [:h2.subtitle class-subtitle]]))
+      [:h1.title title]
+      [:h2.subtitle subtitle]]))
 
 (defn PrimaryNav []
   (let [current-page-id @(rf/subscribe [:page-id])]
     [:nav.tabs.is-boxed
       [:ul
-        ; [NavLink {:active? (= current-page-id "DASHBOARD_PAGE")
-        ;           :href "#/dashboard"
-        ;           :label "Dashboard"}]
         [NavLink {:active? (or (= current-page-id "STUDENTS_PAGE")
                                (= current-page-id "STUDENT_PAGE"))
                   :href "#/students"
-                  :label "Students"}]]]))
-        ; [NavLink {:active? (= current-page-id "MANAGE_COHORT_PAGE")
-        ;           :href "#/manage"
-        ;           :label "Manage Cohort"}]]]))
-        ; [NavLink {:active? (= current-page-id "SCHEDULE_PAGE")
-        ;           :href "#/schedule"
-        ;           :label "Schedule"}]
-        ; [NavLink {:active? (= current-page-id "ATTENDANCE_PAGE")
-        ;           :href "#/attendance"
-        ;           :label "Attendance"}]
-        ; [NavLink {:active? (= current-page-id "ASSIGNMENTS_PAGE")
-        ;           :href "#/assignments"
-        ;           :label "Assignments"}]]]))
+                  :label "Students"}]
+        [NavLink {:active? (= current-page-id "MANAGE_COHORT_PAGE")
+                  :href "#/manage"
+                  :label "Manage Cohort"}]]]))
 
 (defn GitHubLink
   [username]

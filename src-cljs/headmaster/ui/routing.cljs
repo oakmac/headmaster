@@ -8,7 +8,7 @@
     [re-frame.core :as rf]
     [taoensso.timbre :as timbre]))
 
-(def default-route "students")
+(def default-route "/students")
 
 ;; TODO: regex here instead
 ;; or use a proper routing library
@@ -16,12 +16,8 @@
   (str/includes? route "/students/student-"))
 
 (def ^:private pages
-  {; "/dashboard" "DASHBOARD_PAGE"
-   "/students" "STUDENTS_PAGE"
-   ; "/schedule" "SCHEDULE_PAGE"
-   ; "/attendance" "ATTENDANCE_PAGE"
-   ; "/assignments" "ASSIGNMENTS_PAGE"
-   "/manage-students" "MANAGE_STUDENTS_PAGE"})
+  {"/students" "STUDENTS_PAGE"
+   "/manage" "MANAGE_COHORT_PAGE"})
 
 (defn- on-hash-change [_js-evt]
   (let [new-route (util/current-hash)
@@ -31,17 +27,11 @@
       (student-page? new-route)
       (rf/dispatch [:student-page/init student-id])
 
-      (= new-page "DASHBOARD_PAGE")
-      (rf/dispatch [:dashboard/init])
+      (= new-page "MANAGE_COHORT_PAGE")
+      (rf/dispatch [:manage-page/init])
 
       (= new-page "STUDENTS_PAGE")
       (rf/dispatch [:students-page/init])
-
-      (= new-page "ATTENDANCE_PAGE")
-      (rf/dispatch [:attendance-page/init])
-
-      (= new-page "ASSIGNMENTS_PAGE")
-      (rf/dispatch [:assignments-page/init])
 
       :else
       (util/set-hash! default-route))))

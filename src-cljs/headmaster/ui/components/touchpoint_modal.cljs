@@ -20,7 +20,7 @@
       new-touchpoint
       (fn []
         (rf/dispatch [:touchpoint-modal/close])
-        (rf/dispatch [:fetch-class-data]))
+        (rf/dispatch [:fetch-cohort-data]))
       (fn []
         (timbre/error "Failed to save new touchpoint!")))))
 
@@ -32,11 +32,12 @@
   (fn [db _]
     (:touchpoint-modal db)))
 
+;; TODO: use the [:student] subscription here
 (rf/reg-sub
   :touchpoint-modal/student
   (fn [db]
     (let [student-id (get-in db [:touchpoint-modal :student-id])]
-      (get-in db [:class :students (keyword student-id)]))))
+      (get-in db [:cohort :students (keyword student-id)]))))
 
 (rf/reg-sub
   :touchpoint-modal/new-touchpoint

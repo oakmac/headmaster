@@ -8,15 +8,15 @@
 ;; -----------------------------------------------------------------------------
 ;; Effects
 
-;; FIXME: almost certainly need to pass the class slug here
+;; FIXME: almost certainly need to pass the cohort slug here
 (rf/reg-fx
-  :fetch-class-data
+  :fetch-cohort-data
   (fn []
-    (ajax/fetch-class "class1"
-      (fn [class-data]
-        (rf/dispatch [:update-class class-data]))
+    (ajax/fetch-cohort "cohort1"
+      (fn [cohort-data]
+        (rf/dispatch [:update-cohort cohort-data]))
       (fn []
-        (timbre/error "Failed to fetch class data.")))))
+        (timbre/error "Failed to fetch cohort data.")))))
 
 ;; -----------------------------------------------------------------------------
 ;; Events
@@ -30,11 +30,11 @@
     db/initial-app-db))
 
 (rf/reg-event-db
-  :update-class
-  (fn [db [_ class-data]]
-    (assoc db :class class-data)))
+  :update-cohort
+  (fn [db [_ cohort-data]]
+    (assoc db :cohort cohort-data)))
 
 (rf/reg-event-fx
-  :fetch-class-data
+  :fetch-cohort-data
   (fn [cofx _]
-    {:fetch-class-data nil}))
+    {:fetch-cohort-data nil}))

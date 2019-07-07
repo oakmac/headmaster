@@ -5,11 +5,8 @@
     [headmaster.ui.ajax :as ajax]
     [headmaster.ui.components.touchpoint-modal :refer [TouchpointModal]]
     [headmaster.ui.config :refer [config in-mock-mode?]]
-    ; [headmaster.ui.html.assignments-page :refer [AssignmentsPage]]
-    ; [headmaster.ui.html.attendance-page :refer [AttendancePage]]
-    ; [headmaster.ui.html.student-page :refer [StudentPage]]
     [headmaster.ui.events]
-    [headmaster.ui.pages.dashboard :refer [DashboardPage]]
+    [headmaster.ui.pages.manage-cohort :refer [ManageCohortPage]]
     [headmaster.ui.pages.students :refer [StudentsPage]]
     [headmaster.ui.routing :as routing]
     [headmaster.ui.subs]
@@ -29,11 +26,8 @@
         touchpoint-modal @(rf/subscribe [:touchpoint-modal])]
     [:div
       (case page-id
-        "DASHBOARD_PAGE" [DashboardPage]
         "STUDENTS_PAGE" [StudentsPage]
-        ; "STUDENT_PAGE" [StudentPage]
-        ; "ATTENDANCE_PAGE" [AttendancePage]
-        ; "ASSIGNMENTS_PAGE" [AssignmentsPage]
+        "MANAGE_COHORT_PAGE" [ManageCohortPage]
 
         ;; FIXME: better error here
         [:div "<h1>No Page Found</h1>"])
@@ -49,8 +43,8 @@
   []
   (reagent/force-update-all))
 
-(defn- fetch-mock-class-data []
-  (rf/dispatch [:fetch-class-data]))
+(defn- fetch-mock-cohort-data []
+  (rf/dispatch [:fetch-cohort-data]))
 
 (def one-second-ms 1000)
 (def ten-seconds-ms (* 10 one-second-ms))
@@ -60,9 +54,9 @@
     one-second-ms
     ten-seconds-ms))
 
-(defn- start-polling-classroom-data []
-  (fetch-mock-class-data)
-  (js/setInterval fetch-mock-class-data (polling-rate-ms)))
+(defn- start-polling-cohort-data []
+  (fetch-mock-cohort-data)
+  (js/setInterval fetch-mock-cohort-data (polling-rate-ms)))
 
 ;; -----------------------------------------------------------------------------
 ;; Init / Render Loop
@@ -86,4 +80,4 @@
          (rf/dispatch-sync [:init-db])
          (routing/init!)
          (start-rendering!)
-         (start-polling-classroom-data))))))
+         (start-polling-cohort-data))))))

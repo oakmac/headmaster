@@ -5,13 +5,13 @@
     [oops.core :refer [ocall]]
     [taoensso.timbre :as timbre]))
 
-(defn- class-url [class-id]
+(defn- cohort-url [cohort-slug]
   (if (in-mock-mode?)
-    (str "data/demo-class1.json")
+    (str "data/demo-cohort1.json")
     (str "/api/dashboard")))
 
-(defn fetch-class [class-id success-fn error-fn]
-  (GET (class-url class-id)
+(defn fetch-cohort [cohort-id success-fn error-fn]
+  (GET (cohort-url cohort-id)
     {:error-handler error-fn
      :handler success-fn
      :keywords? true

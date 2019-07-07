@@ -12,21 +12,21 @@
     (:page db)))
 
 (rf/reg-sub
-  :class-title
+  :cohort
   (fn [db _]
-    (get-in db [:class :title])))
+    (:cohort db)))
 
 (rf/reg-sub
-  :class-subtitle
+  :cohort-title
   (fn [db _]
-    (get-in db [:class :subtitle])))
+    (get-in db [:cohort :title])))
 
 (rf/reg-sub
-  :class
+  :cohort-subtitle
   (fn [db _]
-    (:class db)))
+    (get-in db [:cohort :subtitle])))
 
 (rf/reg-sub
   :student
   (fn [db [_ student-id]]
-    (get-in db [:class :students (keyword student-id)])))
+    (get-in db [:cohort :students (keyword student-id)])))

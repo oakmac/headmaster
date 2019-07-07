@@ -58,12 +58,12 @@
 
 (rf/reg-sub
   :students-vec
-  :<- [:class]
-  (fn [class _]
+  :<- [:cohort]
+  (fn [cohort _]
     (mapv
       (fn [[id student]]
         (assoc student :id (name id)))
-      (:students class))))
+      (:students cohort))))
 
 (rf/reg-sub
   :filtered-students
@@ -443,7 +443,7 @@
 (defn StudentsPage []
   (let [view-type @(rf/subscribe [:students-page/view-type])]
     [:section.section
-      [common/ClassHeader]
+      [common/CohortHeader]
       [common/PrimaryNav]
       [:div.content
         [FilterControls]

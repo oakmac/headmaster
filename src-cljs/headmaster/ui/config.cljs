@@ -13,7 +13,10 @@
       (.containsKey param)))
 
 (def config
-  {:data-mode (if (query-param-exists? "mock-mode") "MOCK_DATA" "API_DATA")
+  {:data-mode (cond
+                (query-param-exists? "mock-mode") "MOCK_DATA"
+                on-development-page? "MOCK_DATA"
+                :else "API_DATA")
    :hide-student-status? (query-param-exists? "hide-status")})
 
 (defn in-mock-mode? []

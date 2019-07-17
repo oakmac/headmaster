@@ -73,8 +73,8 @@ const transformStudent = R.pipe(
     'classId',
     'createdAt',
   ]),
-  R.converge(
-    R.merge, [
+  // R.converge(
+    // R.merge, [
       R.applySpec({
         name: R.prop('displayName'),
         shortName: R.pipe(
@@ -89,16 +89,16 @@ const transformStudent = R.pipe(
           R.map(transformEvent),
         ),
       }),
-      R.ifElse(
-        R.pipe(
-          R.prop('githubActivityResponse'),
-          R.isNil,
-        ),
-        R.always({}),
-        transformGithubData,
-      ),
-    ]
-  )
+      // R.ifElse(
+      //   R.pipe(
+      //     R.prop('githubActivityResponse'),
+      //     R.isNil,
+      //   ),
+      //   R.always({}),
+      //   transformGithubData,
+      // ),
+    // ]
+  // )
 )
 
 function mapDashboardSQLToResponse(dashboard) {

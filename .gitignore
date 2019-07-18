@@ -7,6 +7,7 @@ node_modules/
 public/js/cljs-runtime/
 public/js/main.js
 public/js/manifest.edn
+server.js
 
 *.sqlite3
 *.db

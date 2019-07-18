@@ -17,4 +17,9 @@
       :modules {:main {:init-fn headmaster.ui.core/init!}}
       :devtools {:after-load headmaster.ui.core/re-render-everything
                  :http-root "public"
-                 :http-port 7772}}}}
+                 :http-port 7772}}
+
+     :backend
+     {:target :node-script
+      :output-to "server.js"
+      :main headmaster.backend.core/init!}}}

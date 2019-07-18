@@ -1,23 +1,46 @@
 (ns headmaster.backend.core
   (:require
-    ; ["web-animations-js" :as js-web-animations]
     ["express" :as express]
+    ["passport" :as passport]
+    ["path" :as path]
     [goog.functions :as gfunctions]
-    [oops.core :refer [ocall]]
     [headmaster.backend.config :refer [config]]
+    ; [headmaster.backend.routes.homepage :refer [HomepageRouter]]
+    [oops.core :refer [ocall]]
     [taoensso.timbre :as timbre]))
 
-(def port 5005)
+(def public-path "public/")
 
-;; express.js application
-(def app nil)
+(defn homepage [js-req js-res next-fn]
+  (timbre/info "homepage 9999999999999999999999999")
+  (.send js-res "damn son"))
 
-(def init-express-app!
+(defn- foo [js-req js-res next-fn]
+  (timbre/info "foo!!!!!")
+  (next-fn))
+
+(defn- add-middleware [app]
+  (doto app
+    (.use (.json express))
+    ;; TODO: urlencoded
+    ;; TODO: session()
+    ;; TODO: passport.initialize()
+    ;; TODO: passport.session()
+    (.use (.static express public-path))))
+
+(defn- add-routes [app]
+  (doto app
+    (.use "/" (array foo foo foo homepage))))
+
+(def init-express-server!
   (gfunctions/once
     (fn []
-      (set! app (express))
-      (ocall app "listen" (:port config)
-             #(timbre/info (str "express.js server started on port " (:port config)))))))
+      (doto
+        (express)
+        add-middleware
+        add-routes
+        (.listen (:port config)
+                 #(timbre/info (str "express.js server started on port " (:port config))))))))
 
 (def init!
   (gfunctions/once
@@ -25,4 +48,4 @@
       (timbre/info "Booting up Headmaster server now :)")
       ; (load-config!)
       ; (connect-to-db!)
-      (init-express-app!))))
+      (init-express-server!))))

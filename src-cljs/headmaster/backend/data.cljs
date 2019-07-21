@@ -1,62 +1,35 @@
-(ns headmaster.backend.sql-queries
+(ns headmaster.backend.data
   (:require
-    ["fs-plus" :as fs-plus]
-    ["glob" :as js-glob]
-    ["path" :as js-path]
-    [headmaster.backend.config :refer [config]]
+    [clojure.core.async :refer [chan put!]]
+    [headmaster.backend.db :as db]
     [oops.core :refer [oget]]
     [taoensso.timbre :as timbre]))
 
-; (def sql-files (.sync js-glob "./sql/*.sql"))
-;
-; (def sql-queries
-;   (reduce
-;     (fn [queries file-with-path]
-;       (let [filename (oget (.parse js-path file-with-path) "name")
-;             query-name (keyword filename)
-;             file-contents (.readFileSync fs-plus file-with-path "utf8")]
-;         (assoc queries query-name file-contents)))
-;     {}
-;     sql-files))
-;
-;
-;
-; (timbre/info sql-queries)
-; (js/console.log "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-;
-;
-;
-;
+;; -----------------------------------------------------------------------------
+;; Cohort
 
-(def sql-queries (atom {}))
-
-(defn load-sql-queries!
-  "Load SQL queries from ./sql/*.sql and put them in sql-queries atom"
-  []
-  (let [sql-files (.sync js-glob "./sql/*.sql")
-        queries (reduce
-                  (fn [queries-acc file-with-path]
-                    (let [filename (oget (.parse js-path file-with-path) "name")
-                          query-name (keyword filename)
-                          file-contents (.readFileSync fs-plus file-with-path "utf8")]
-                      (assoc queries-acc query-name file-contents)))
-                  {}
-                  sql-files)]
-    (timbre/info (str "Loaded " (count queries) " SQL queries from ./sql/*.sql"))
-    (reset! sql-queries queries)))
-
-
-
-
-
-
-
-
-
-
-
-(defn get-cohort-promise [success-fn error-fn])
+(defn get-cohort [id-or-slug success-fn]
+  (db/run-query :get-cohort {:id id-or-slug :slug id-or-slug}
+    (fn [result]
+      (success-fn (first result)))))
 
 (defn go-get-cohort
   "Returns a core.async channel"
-  [slug])
+  [id-or-slug]
+  (let [c (chan)]
+    (get-cohort id-or-slug
+      (fn [cohort]
+        (if cohort
+          (put! c cohort)
+          (put! c false))))
+    c))
+
+;; -----------------------------------------------------------------------------
+;; Students
+
+;; TODO: write me
+
+;; -----------------------------------------------------------------------------
+;; User
+
+;; TODO: write me

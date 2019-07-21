@@ -5,6 +5,7 @@
     ["path" :as path]
     [goog.functions :as gfunctions]
     [headmaster.backend.config :refer [config]]
+    [headmaster.backend.data :as data]
     [headmaster.backend.db :as db]
     [headmaster.backend.db.queries :as queries]
     [oops.core :refer [ocall]]
@@ -50,9 +51,9 @@
       (queries/load-sql-queries!)
       ; (load-config!)
       (db/connect-to-db!)
-      (init-express-server!)
+      (init-express-server!))))
 
-      (js/setTimeout
-        (fn []
-          (db/run-query :get-cohort))
-        100))))
+      ; (js/setTimeout
+      ;   (fn []
+      ;     (data/get-cohort "demo-cohort-1" #(timbre/info %)))
+      ;   100))))

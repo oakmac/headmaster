@@ -1,3 +1,3 @@
 SELECT *
-FROM Cohorts
-WHERE slug = $slug
+FROM Classes
+WHERE id = :id OR slug = :slug

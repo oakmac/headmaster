@@ -29,13 +29,23 @@
 
 (defn run-query
   ([q-label]
-   (run-query q-label {}))
-  ([q-label args]
+   (run-query q-label {} (constantly nil)))
+  ([q-label arg1]
+   (cond
+     (map? arg1) (run-query q-label arg1 (constantly nil))
+     (fn? arg1) (run-query q-label {} arg1)
+     :else (timbre/error "db/run-query called with second argument that was neither a map nor a function")))
+  ([q-label q-args result-fn]
    (let [q (queries/get-query q-label)]
      (cond
        (not js-conn) (timbre/error "db/run-query error: unable to run query without database connection:" q-label)
        (not q) (timbre/error "db/run-query error: could not find query with label:" q-label)
        ;; TODO: check that the args are valid for this query
        :else
-       (do
-         (timbre/info "running query....." q-label))))))
+       (doto (.raw js-conn q (clj->js q-args))
+         (.then
+           (fn [js-result]
+             (result-fn (js->clj js-result :keywordize-keys true))))
+         (.catch
+           (fn []
+             (timbre/error "db/run-query error executing query:" q-label))))))))

@@ -5,7 +5,8 @@
     ["path" :as path]
     [goog.functions :as gfunctions]
     [headmaster.backend.config :refer [config]]
-    ; [headmaster.backend.routes.homepage :refer [HomepageRouter]]
+    [headmaster.backend.db :as db]
+    [headmaster.backend.db.queries :as queries]
     [oops.core :refer [ocall]]
     [taoensso.timbre :as timbre]))
 
@@ -46,6 +47,12 @@
   (gfunctions/once
     (fn []
       (timbre/info "Booting up Headmaster server now :)")
+      (queries/load-sql-queries!)
       ; (load-config!)
-      ; (connect-to-db!)
-      (init-express-server!))))
+      (db/connect-to-db!)
+      (init-express-server!)
+
+      (js/setTimeout
+        (fn []
+          (db/run-query :get-cohort))
+        100))))

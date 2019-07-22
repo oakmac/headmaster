@@ -8,7 +8,8 @@
     [goog.functions :as gfunctions]
     [headmaster.backend.config :refer [config]]
     [headmaster.backend.db :as db]
-    [headmaster.backend.middleware :as middleware]
+    [headmaster.backend.express.middleware :as middleware]
+    [headmaster.backend.express.params :as params]
     [headmaster.backend.routes.pages :as pages]
     [taoensso.timbre :as timbre]))
 
@@ -32,9 +33,14 @@
     (.use (.session passport))
     (.use (.static express public-path))))
 
+(defn- add-params [app]
+  (doto app
+    (.param "cohortSlug" params/cohort-slug)))
+
 (defn- add-routes [app]
   (doto app
-    (.get "/" pages/homepage)))
+    (.get "/" pages/homepage)
+    (.get "/cohort/:cohortSlug" pages/cohort)))
 
 (def init-express-server!
   (gfunctions/once
@@ -42,6 +48,7 @@
       (doto
         (express)
         add-middleware
+        add-params
         add-routes
         (.listen (:port config)
                  #(timbre/info (str "express.js server started on port " (:port config))))))))

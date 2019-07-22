@@ -15,6 +15,6 @@
   (gfunctions/once
     (fn []
       (timbre/info "Headmaster server started :)")
-      ; (load-config!)
+      ; (config/load-config!)
       (db/connect-to-db! {:environment :development
                           :on-success after-db-connection}))))

@@ -1,4 +1,4 @@
-(ns headmaster.backend.middleware
+(ns headmaster.backend.express.middleware
   (:require
     [clojure.core.async :refer [chan put!]]
     [headmaster.backend.data :as data]

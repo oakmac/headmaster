@@ -12,6 +12,7 @@ server.js
 *.sqlite3
 *.db
 config.json
+server.config.json
 *.diff
 
 deploy.sh

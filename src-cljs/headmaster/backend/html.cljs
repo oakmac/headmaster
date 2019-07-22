@@ -30,3 +30,9 @@
             [:a.button.is-medium {:href "/login/github"}
               [:span.icon [:i.fab.fa-github]]
               [:span "Login with Github"]]]]]]))
+
+(defn not-found-page []
+  (html5
+    (head "Page Not Found")
+    [:body
+      [:h1.title "Page not found"]]))

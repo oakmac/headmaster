@@ -4,6 +4,7 @@
                 [day8.re-frame/http-fx "0.1.6"]
                 [funcool/bide "1.6.0"]
                 [funcool/promesa "1.9.0"]
+                [macchiato/hiccups "0.4.1"]
                 [re-frame "0.10.6"]
                 [reagent "0.8.1"]]
 

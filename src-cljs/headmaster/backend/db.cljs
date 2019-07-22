@@ -9,23 +9,25 @@
 (def js-conn nil)
 
 (defn connect-to-db!
-  ([] (connect-to-db! :development))
-  ([environment]
-   (let [js-knexfile (js/require "./knexfile.js")
-         js-db-config (oget+ js-knexfile (str "?" (name environment)))]
-     (if-not js-db-config
-       (timbre/error "Unable to load database config for environment:" environment)
-       (let [db-config (js->clj js-db-config)]
-         ;; set the connection
-         (set! js-conn (knex-lib js-db-config))
-         ;; execute a query to test the connection
-         (doto (.select js-conn (.raw js-conn "1"))
-               (.then (fn [js-result]
-                        (if js-result
-                          (timbre/info "Connected to database with config:" db-config)
-                          (timbre/error "Unable to connect to database with config:" db-config))))
-               (.catch (fn []
-                         (timbre/error "Unable to connect to database with config:" db-config)))))))))
+  [{:keys [environment on-success]}]
+  (let [js-knexfile (js/require "./knexfile.js")
+        js-db-config (oget+ js-knexfile (str "?" (name environment)))]
+    (if-not js-db-config
+      (timbre/error "Unable to load database config for environment:" environment)
+      (let [db-config (js->clj js-db-config)]
+        ;; set the connection
+        (set! js-conn (knex-lib js-db-config))
+        ;; execute a query to test the connection
+        (doto (.select js-conn (.raw js-conn "1"))
+              (.then (fn [js-result]
+                       (if js-result
+                         (do
+                           (timbre/info "Connected to database with config:" db-config)
+                           (when (fn? on-success)
+                             (on-success)))
+                         (timbre/error "Unable to connect to database with config:" db-config))))
+              (.catch (fn []
+                        (timbre/error "Unable to connect to database with config:" db-config))))))))
 
 (defn run-query
   ([q-label]

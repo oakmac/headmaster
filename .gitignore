@@ -1,5 +1,6 @@
 ## NPM libraries
 node_modules/
+package-lock.json
 
 ## Shadow CLJS files
 .nrepl-port

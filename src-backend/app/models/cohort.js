@@ -5,8 +5,8 @@ const R = require('ramda')
 
 const createGuts = require('../helpers/model-guts')
 
-const name = 'Class'
-const tableName = 'Classes'
+const name = 'Cohort'
+const tableName = 'Cohorts'
 
 const selectableProps = [
   'id',
@@ -25,11 +25,11 @@ module.exports = knex => {
 
   const Student = initStudentModel(knex)
 
-  function _getBySlug(classSlug) {
+  function _getBySlug(cohortSlug) {
     return knex
       .from(tableName)
       .where({
-        slug: classSlug,
+        slug: cohortSlug,
       })
   }
 
@@ -38,15 +38,15 @@ module.exports = knex => {
     R.then(R.head),
   )
 
-  function createAndAssignStudentsToClass(classSlug, arrayOfStudents) {
+  function createAndAssignStudentsToCohort(cohortSlug, arrayOfStudents) {
     return knex.transaction(function(transaction) {
-      return _getBySlug(classSlug)
+      return _getBySlug(cohortSlug)
         .transacting(transaction)
         .select('id')
-        .then(function( classes ) {
-          const classId = R.path([0, 'id'])(classes)
+        .then(function( cohorts ) {
+          const cohortId = R.path([0, 'id'])(cohorts)
           const studentsToInsert = R.map(
-            R.assoc('classId', classId)
+            R.assoc('cohortId', cohortId)
           )(arrayOfStudents)
 
           return Student.bulkCreate(studentsToInsert)
@@ -55,35 +55,35 @@ module.exports = knex => {
     })
   }
 
-  function getStudentsForClass(classSlug) {
+  function getStudentsForCohort(cohortSlug) {
     return knex.transaction(function(transaction) {
-      return _getBySlug(classSlug)
+      return _getBySlug(cohortSlug)
         .transacting(transaction)
         .select('id')
-        .then(function( classes ) {
-          const classId = R.path([0, 'id'])(classes)
+        .then(function( cohorts ) {
+          const cohortId = R.path([0, 'id'])(cohorts)
 
           return Student.find({
-              classId
+              cohortId
             })
             .transacting(transaction)
         })
     })
   }
 
-  function getDashboardForClass(filter) {
+  function getDashboardForCohort(filter) {
 
     return knex.transaction(function(transaction) {
       return knex.from(tableName)
         .where(filter)
         .transacting(transaction)
         .select()
-        .then(function(classes) {
-          const classInfo = R.path([0])(classes)
-          const classId = classInfo.id
+        .then(function(cohorts) {
+          const cohortInfo = R.path([0])(cohorts)
+          const cohortId = cohortInfo.id
 
           return Student.findWithGithub({
-              classId
+              cohortId
             })
             .transacting(transaction)
             .then(function(students) {
@@ -103,7 +103,7 @@ module.exports = knex => {
                     .then(R.assoc('events', R.__, student))
                   )
                 )(students))
-                .then(R.assoc('students', R.__, classInfo))
+                .then(R.assoc('students', R.__, cohortInfo))
             })
         })
     })
@@ -111,9 +111,9 @@ module.exports = knex => {
 
   return {
     ...guts,
-    createAndAssignStudentsToClass,
+    createAndAssignStudentsToCohort,
     getBySlug,
-    getDashboardForClass,
-    getStudentsForClass,
+    getDashboardForCohort,
+    getStudentsForCohort,
   }
 }

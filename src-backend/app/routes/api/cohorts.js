@@ -1,26 +1,26 @@
 const {
-  getClassesForAuthorizedUser,
-  setClassesForAuthorizedUser,
-  setStudentsForClass,
-  getStudentsForClass,
-  getClassDashboard,
-} = require('../../controllers/api/classes')
+  getCohortsForAuthorizedUser,
+  setCohortsForAuthorizedUser,
+  setStudentsForCohort,
+  getStudentsForCohort,
+  getCohortDashboard,
+} = require('../../controllers/api/cohort')
 
 const router = require('express').Router()
 
-router.route('/classes')
-  .get(getClassesForAuthorizedUser)
+router.route('/cohorts')
+  .get(getCohortsForAuthorizedUser)
   // example post body:
   // {
-  //    "classes": [{
+  //    "cohorts": [{
   //      "slug": "test-103",
-  //      "name": "Test Class with Demo Students"
+  //      "name": "Test Cohort with Demo Students"
   //    }]
   // }
-  .post(setClassesForAuthorizedUser)
+  .post(setCohortsForAuthorizedUser)
 
-router.route('/classes/:classSlug/students')
-  .get(getStudentsForClass)
+router.route('/cohorts/:cohortSlug/students')
+  .get(getStudentsForCohort)
   // example post body:
   // {
   //   "students": [
@@ -38,9 +38,9 @@ router.route('/classes/:classSlug/students')
   //     }
   //   ]
   // }
-  .post(setStudentsForClass)
+  .post(setStudentsForCohort)
 
-router.route('/classes/:classSlug/touchpoints')
-  .get(getClassDashboard)
+router.route('/cohorts/:cohortSlug/touchpoints')
+  .get(getCohortDashboard)
 
 module.exports = router

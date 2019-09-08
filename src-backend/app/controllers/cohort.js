@@ -1,15 +1,15 @@
 const R = require('ramda')
-const { Class, UserClass } = require('../models')
+const { Cohort, UserCohort } = require('../models')
 const { notFoundPage } = require('./errors')
 
-function acceptClassroomInvitation (req, res, nextFn) {
+function acceptCohortInvitation (req, res, nextFn) {
   const userId = req.user.id
   const cohortSlug = req.params.cohortSlug
 
-  return Class.getBySlug(cohortSlug)
-    .then(function(classroom) {
-      return UserClass.setClassesForUser(userId, [{
-        id: classroom.id,
+  return Cohort.getBySlug(cohortSlug)
+    .then(function(cohort) {
+      return UserCohort.setCohortsForUser(userId, [{
+        id: cohort.id,
       }])
     })
     .then(function () {
@@ -18,12 +18,12 @@ function acceptClassroomInvitation (req, res, nextFn) {
     .catch(nextFn)
 }
 
-function validClassroomParam (req, res, nextFn) {
+function validCohortParam (req, res, nextFn) {
   const cohortSlug = req.params.cohortSlug
 
-  return Class.getBySlug(cohortSlug)
-    .then(function (classroom) {
-      if (classroom) {
+  return Cohort.getBySlug(cohortSlug)
+    .then(function (cohort) {
+      if (cohort) {
         nextFn()
       } else {
         notFoundPage(req, res)
@@ -36,7 +36,7 @@ function validClassroomParam (req, res, nextFn) {
 }
 
 // does this user have access to view :cohortSlug?
-function validClassroomPermission (req, res, nextFn) {
+function validCohortPermission (req, res, nextFn) {
   const requestSlug = req.params.cohortSlug
   const userId = req.user && req.user.id
 
@@ -46,9 +46,9 @@ function validClassroomPermission (req, res, nextFn) {
     return
   }
 
-  return UserClass.getClassesForUser(userId)
-    .then(function (classes) {
-      const usercohortSlugs = R.pluck('slug', classes)
+  return UserCohort.getCohortsForUser(userId)
+    .then(function (cohorts) {
+      const usercohortSlugs = R.pluck('slug', cohorts)
       if (R.includes(requestSlug, usercohortSlugs)) {
         nextFn()
       } else {
@@ -60,7 +60,7 @@ function validClassroomPermission (req, res, nextFn) {
 }
 
 module.exports = {
-  acceptClassroomInvitation,
-  validClassroomParam,
-  validClassroomPermission
+  acceptCohortInvitation,
+  validCohortParam,
+  validCohortPermission
 }

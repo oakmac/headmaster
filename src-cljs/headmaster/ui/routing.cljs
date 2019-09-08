@@ -17,7 +17,7 @@
 
 (def ^:private pages
   {"/students" "STUDENTS_PAGE"
-   "/manage" "MANAGE_COHORT_PAGE"})
+   "/manage-students" "MANAGE_STUDENTS_PAGE"})
 
 (defn- on-hash-change [_js-evt]
   (let [new-route (util/current-hash)
@@ -27,8 +27,8 @@
       (student-page? new-route)
       (rf/dispatch [:student-page/init student-id])
 
-      (= new-page "MANAGE_COHORT_PAGE")
-      (rf/dispatch [:manage-page/init])
+      (= new-page "MANAGE_STUDENTS_PAGE")
+      (rf/dispatch [:manage-students-page/init])
 
       (= new-page "STUDENTS_PAGE")
       (rf/dispatch [:students-page/init])

@@ -6,7 +6,7 @@
     [headmaster.ui.components.touchpoint-modal :refer [TouchpointModal]]
     [headmaster.ui.config :refer [config in-mock-mode?]]
     [headmaster.ui.events]
-    [headmaster.ui.pages.manage-cohort :refer [ManageCohortPage]]
+    [headmaster.ui.pages.manage-students :refer [ManageStudentsPage]]
     [headmaster.ui.pages.students :refer [StudentsPage]]
     [headmaster.ui.routing :as routing]
     [headmaster.ui.subs]
@@ -25,9 +25,10 @@
   (let [page-id @(rf/subscribe [:page-id])
         touchpoint-modal @(rf/subscribe [:touchpoint-modal])]
     [:div
+      ;; TODO: make this a multi-method
       (case page-id
         "STUDENTS_PAGE" [StudentsPage]
-        "MANAGE_COHORT_PAGE" [ManageCohortPage]
+        "MANAGE_STUDENTS_PAGE" [ManageStudentsPage]
 
         ;; FIXME: better error here
         [:div "<h1>No Page Found</h1>"])

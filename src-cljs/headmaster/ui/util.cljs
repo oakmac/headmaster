@@ -34,5 +34,9 @@
   (when (fn? (oget js-evt "preventDefault"))
     (ocall js-evt "preventDefault")))
 
+;; TODO: be more defensive here?
+(defn target-value [js-evt]
+  (oget js-evt "currentTarget.value"))
+
 (defn safe-lower-case [s]
   (str/lower-case (str s)))

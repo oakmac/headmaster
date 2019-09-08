@@ -32,9 +32,9 @@
                                (= current-page-id "STUDENT_PAGE"))
                   :href "#/students"
                   :label "Students"}]
-        [NavLink {:active? (= current-page-id "MANAGE_COHORT_PAGE")
-                  :href "#/manage"
-                  :label "Manage Cohort"}]]]))
+        [NavLink {:active? (= current-page-id "MANAGE_STUDENTS_PAGE")
+                  :href "#/manage-students"
+                  :label "Manage Students"}]]]))
 
 (defn GitHubLink
   [username]

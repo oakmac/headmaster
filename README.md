@@ -6,14 +6,15 @@ A classroom tracking tool for coding bootcamps.
 
 ### First-time Setup
 
-Install [Node.js], then from the command line:
+Install [Node.js] and [yarn], then from the command line:
 
 ```sh
 # installs node_modules/ folder
-npm install
+yarn install
 ```
 
 [Node.js]:https://nodejs.org/
+[yarn]:https://yarnpkg.com/
 
 ### Backend
 

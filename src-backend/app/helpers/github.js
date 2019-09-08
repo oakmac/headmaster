@@ -31,7 +31,7 @@ const transformGitHubResponse = R.pipe(
   R.omit('status'),
 )
 
-function filterForEventsByType(githubEvents, eventTypes = ['PushEvent', 'ForkEvent', 'CreateEvent', 'PullRequestEvent']) {
+function filterForEventsByType(githubEvents, eventTypes = ['PushEvent']) {
   return R.filter(
     R.propSatisfies(
       R.includes(R.__, eventTypes),

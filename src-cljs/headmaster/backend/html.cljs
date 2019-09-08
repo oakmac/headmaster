@@ -36,3 +36,9 @@
     (head "Page Not Found")
     [:body
       [:h1.title "Page not found"]]))
+
+(defn login-page []
+  (html5
+    (head "Login")
+    [:body
+      [:h1.title "TODO: write login page"]]))

@@ -3,6 +3,7 @@
     ["connect-session-knex" :as connect-session-knex]
     ["express-session" :as express-session]
     ["express" :as express]
+    ["passport-github" :as passport-github]
     ["passport" :as passport]
     ["path" :as path]
     [goog.functions :as gfunctions]
@@ -11,9 +12,22 @@
     [headmaster.backend.express.middleware :as middleware]
     [headmaster.backend.express.params :as params]
     [headmaster.backend.routes.pages :as pages]
+    [oops.core :refer [oget]]
     [taoensso.timbre :as timbre]))
 
 (def public-path "public/")
+
+(def GithubStrategy (oget passport-github "Strategy"))
+
+;; TODO: add some assertions here about config values
+(defn- configure-passport []
+  (.use passport
+    (GithubStrategy. (js-obj "clientID" (:GITHUB_CLIENT_ID config)
+                             "clientSecret" (:GITHUB_CLIENT_SECRET config)
+                             "callbackURL" "asdfadsfad"))
+    (fn [access-token refresh-token profile callback-fn]
+      (timbre/info "when the hell does this get called?")
+      (callback-fn))))
 
 (defn- create-session-middleware []
   (let [KnexSessionStore (connect-session-knex express-session)
@@ -40,6 +54,8 @@
 (defn- add-routes [app]
   (doto app
     (.get "/" pages/homepage)
+    (.get "/login" pages/login)
+    (.get "/login/github" (.authenticate passport "github"))
     (.get "/cohort/:cohortSlug" pages/cohort)))
 
 (def init-express-server!

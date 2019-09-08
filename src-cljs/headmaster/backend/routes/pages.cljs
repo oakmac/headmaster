@@ -9,5 +9,8 @@
 (defn homepage [_req res _next-fn]
   (.send res (html/homepage)))
 
+(defn login [_req res _next-fn]
+  (.send res (html/login-page)))
+
 (defn cohort [req res next-fn]
   (.send res "TODO: cohort page"))

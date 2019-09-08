@@ -1,6 +1,6 @@
 'use strict'
 
-const createGuts = require('../helpers/model-guts-with-json')
+const createGuts = require('../helpers/model-guts')
 const R = require('ramda')
 
 const name = 'Touchpoint'

@@ -9,7 +9,7 @@ const tableName = 'Students'
 
 const selectableProps = [
   'id',
-  'classId',
+  'cohortId',
   'githubUsername',
   'displayName',
   'createdAt',
@@ -28,7 +28,7 @@ module.exports = knex => {
       .leftJoin('StudentsGithubResponses', 'StudentsGithubResponses.studentId', 'Students.id')
       .select({
         id: 'Students.id',
-        classId: 'Students.classId',
+        cohortId: 'Students.cohortId',
         githubUsername: 'Students.githubUsername',
         displayName: 'Students.displayName',
         githubActivityResponse: 'StudentsGithubResponses.body',

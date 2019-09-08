@@ -1,11 +1,11 @@
 const router = require('express').Router()
 
-const classesAPI = require('./classes')
+const cohortsAPI = require('./cohorts')
 const studentsAPI = require('./students')
 const dashboardAPI = require('./dashboard')
 
 router.use('/api', [
-  classesAPI,
+  cohortsAPI,
   studentsAPI,
   dashboardAPI,
 ])

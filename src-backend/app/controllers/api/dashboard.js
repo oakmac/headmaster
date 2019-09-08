@@ -5,24 +5,24 @@ const {
   refreshStudentsGithubResponses,
 } = require('../../helpers/students-github')
 
-const { UserClass } = require('../../models')
-const { Class } = require('../../models')
+const { UserCohort } = require('../../models')
+const { Cohort } = require('../../models')
 
-// TODO assuming first class found for user is the class to goto.
-// FIX make frontend page for selecting from existing classes for user.
+// TODO assuming first cohort found for user is the cohort to goto.
+// FIX make frontend page for selecting from existing cohorts for user.
 function getDashboardForAuthorizedUser(req, res, next) {
   const userId = req.user.id
 
-  return UserClass.getClassesForUser(userId)
+  return UserCohort.getCohortsForUser(userId)
     .then(R.pipe(
       R.head,
       R.pick(['id']),
     ))
-    // .then(function(classInfo){
-    //   return refreshStudentsGithubResponses(R.prop('id')(classInfo))
-    //     .then(R.always(classInfo))
+    // .then(function(cohortInfo){
+    //   return refreshStudentsGithubResponses(R.prop('id')(cohortInfo))
+    //     .then(R.always(cohortInfo))
     // })
-    .then(Class.getDashboardForClass)
+    .then(Cohort.getDashboardForCohort)
     .then(mapDashboardSQLToResponse)
     .then(function(dashboard) {
       res.json(dashboard)

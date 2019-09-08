@@ -65,7 +65,7 @@ const getMostRecentTouchpointProp = (prop) => R.pipe(
 const transformStudent = R.pipe(
   R.omit([
     'id',
-    'classId',
+    'cohortId',
     'createdAt',
   ]),
   // R.converge(
@@ -101,7 +101,7 @@ function mapDashboardSQLToResponse(dashboard) {
     id: R.prop('slug'),
     title: R.prop('name'),
     // TODO making some assumptions about start date,
-    // add actual start and end date for classes
+    // add actual start and end date for cohorts
     subtitle: R.pipe(
       R.prop('createdAt'),
       R.partialRight(format, ['MMM YYYY']),

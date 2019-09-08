@@ -37,13 +37,13 @@ module.exports = knex => {
   } 
 
   // TODO make more flexible in time units since
-  function getStaleStudents(classId, daysSince = 1) {
+  function getStaleStudents(cohortId, daysSince = 1) {
     return  knex.from('Students')
       .leftJoin(
         getLatestResponse(),
         'Students.id', `latest.studentId`
       )
-      .where('Students.classId', classId)
+      .where('Students.cohortId', cohortId)
       .andWhere(function(){
         this
           .where('latest.latestResponse', '<', subDays(new Date(), daysSince))

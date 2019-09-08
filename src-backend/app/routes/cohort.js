@@ -4,7 +4,7 @@ const mustache = require('mustache')
 const { isFn, loadTemplate } = require('../util')
 
 const { permissionRequired } = require('../controllers/errors')
-const { acceptClassroomInvitation, validClassroomParam, validClassroomPermission } = require('../controllers/cohort')
+const { acceptCohortInvitation, validCohortParam, validCohortPermission } = require('../controllers/cohort')
 
 const router = require('express').Router()
 
@@ -40,14 +40,14 @@ function newCohortPage (req, res, _nextFn) {
 
 router.route('/new-cohort').get([permissionRequired, newCohortPage])
 
-router.route('/cohort/:cohortSlug').get([validClassroomParam, validClassroomPermission, cohortPage])
+router.route('/cohort/:cohortSlug').get([validCohortParam, validCohortPermission, cohortPage])
 
-router.route('/cohort/:cohortSlug/invitation').get([validClassroomParam, invitationPage])
+router.route('/cohort/:cohortSlug/invitation').get([validCohortParam, invitationPage])
 
 router.route('/cohort/:cohortSlug/invitation/accept')
   .get([
-    validClassroomParam,
-    acceptClassroomInvitation,
+    validCohortParam,
+    acceptCohortInvitation,
     acceptPage,
   ])
 

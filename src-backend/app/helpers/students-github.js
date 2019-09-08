@@ -10,9 +10,9 @@ const {
 } = require('../models')
 
 
-function refreshStudentsGithubResponses(classId) {
+function refreshStudentsGithubResponses(cohortId) {
   return StudentGithubResponse
-    .getStaleStudents(classId)
+    .getStaleStudents(cohortId)
     .then(function (staleStudents) {
       return Promise.all(R.map(
         (student) => {

@@ -1,8 +1,10 @@
 {
-    "environmentVariables": {
-      "GITHUB_CLIENT_ID": "example-github-client-id-here",
-      "GITHUB_CLIENT_SECRET": "example-github-secret-here",
-      "PORT": 3000,
-      "HOST": "http://localhost:3000"
-    }
+  "environmentVariables": {
+    "GITHUB_CLIENT_ID": "example-github-client-id-here",
+    "GITHUB_CLIENT_SECRET": "example-github-secret-here",
+    "PORT": 3000,
+    "HOST": "http://localhost:3000",
+    "PG_CONNECTION_STRING": "postgres://user:pass@localhost:5432/dbname",
+    "NODE_ENV": "development"
   }
+}

@@ -4,7 +4,7 @@ const {
 } = require('date-fns')
 const R = require('ramda')
 
-const createGuts = require('../helpers/model-guts-with-json')
+const createGuts = require('../helpers/model-guts')
 
 const name = 'StudentGithubResponse'
 const tableName = 'StudentsGithubResponses'

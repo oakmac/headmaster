@@ -1,7 +1,6 @@
 'use strict'
 
 const initStudentModel = require('./student')
-const initTouchpointModel = require('./touchpoint')
 const R = require('ramda')
 
 const createGuts = require('../helpers/model-guts')
@@ -25,7 +24,6 @@ module.exports = knex => {
   })
 
   const Student = initStudentModel(knex)
-  const Touchpoint = initTouchpointModel(knex)
 
   function _getBySlug(classSlug) {
     return knex
@@ -102,7 +100,6 @@ module.exports = knex => {
                     ])
                     .orderBy('StudentsEvents.createdAt', 'desc')
                     .transacting(transaction)
-                    .map(Touchpoint.parseFromSQLite)
                     .then(R.assoc('events', R.__, student))
                   )
                 )(students))
